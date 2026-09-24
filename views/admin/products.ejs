@@ -1,32 +1,27 @@
 <%- include('./partials/header') %>
 
-<div class="container mt-4">
-  <% if (typeof error !== 'undefined' && error) { %>
-  <div class="alert alert-danger" role="alert"><%= error %></div>
-  <% } %>
+  <div class="container mt-4">
+    <% if (typeof error !=='undefined' && error) { %>
+      <div class="alert alert-danger" role="alert">
+        <%= error %>
+      </div>
+      <% } %>
 
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Product Management</h2>
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#addProductModal"
-    >
-      Add New Product
-    </button>
-  </div>
+        <div class="d-flex justify-content-between align-items-center mb-4">
+          <h2>Product Management</h2>
+          <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addProductModal">
+            Add New Product
+          </button>
+        </div>
 
-  <!-- Thêm phần tìm kiếm vào trước bảng sản phẩm -->
-  <div class="card shadow mb-4">
-    <div
-      class="card-header py-3 d-flex justify-content-between align-items-center"
-    >
-      <h6 class="m-0 font-weight-bold text-primary">Products List</h6>
-      <div class="d-flex gap-2">
-        <!-- Search Box -->
-        <div class="search-box" style="min-width: 300px">
-          <!-- <div class="input-group">
+        <!-- Thêm phần tìm kiếm vào trước bảng sản phẩm -->
+        <div class="card shadow mb-4">
+          <div class="card-header py-3 d-flex justify-content-between align-items-center">
+            <h6 class="m-0 font-weight-bold text-primary">Products List</h6>
+            <div class="d-flex gap-2">
+              <!-- Search Box -->
+              <div class="search-box" style="min-width: 300px">
+                <!-- <div class="input-group">
             <input
               type="text"
               class="form-control"
@@ -78,744 +73,610 @@
               </li>
             </ul>
           </div> -->
-          <div class="position-relative">
-            <input
-              type="text"
-              class="form-control rounded-pill shadow-sm ps-3 pe-5"
-              id="searchInput"
-              placeholder="Tìm kiếm theo tên, mô tả, danh mục..."
-              onkeyup="debounceSearch(this.value)"
-            />
-            <i
-              class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"
-            ></i>
-          </div>
-
-          <!-- Link Bootstrap Icons nếu chưa có -->
-          <link
-            rel="stylesheet"
-            href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-          />
-        </div>
-      </div>
-    </div>
-
-    <!-- Products Table -->
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered" id="productsTable">
-          <thead>
-            <tr>
-              <th>ID</th>
-              <th>Image</th>
-              <th>Name</th>
-              <th>Category</th>
-              <th>Price</th>
-              <th>Stock</th>
-              <th>Expiry Date</th>
-              <th>Origin</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody id="productsTableBody">
-            <!-- Table content will be dynamically updated -->
-          </tbody>
-        </table>
-      </div>
-      <!-- No results message -->
-      <div id="noResults" class="text-center py-3 d-none">
-        <i class="fas fa-search fa-3x text-gray-300 mb-3"></i>
-        <p class="text-gray-500">
-          No products found matching your search criteria
-        </p>
-      </div>
-    </div>
-  </div>
-</div>
-
-<!-- Add Product Modal -->
-<div class="modal fade" id="addProductModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Add New Product</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-      <form
-        action="/admin/products"
-        method="POST"
-        enctype="multipart/form-data"
-      >
-        <div class="modal-body">
-          <div class="row">
-            <!-- Thông tin cơ bản -->
-            <div class="col-md-6">
-              <h6 class="mb-3">Basic Information</h6>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Product Name <span class="text-danger">*</span></label
-                >
-                <input type="text" class="form-control" name="name" required />
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Category <span class="text-danger">*</span></label
-                >
-                <select class="form-select" name="categoryId" required>
-                  <option value="">Select Category</option>
-                  <% categories.forEach(function(category) { %>
-                  <option value="<%= category.id %>">
-                    <%= category.name %>
-                  </option>
-                  <% }); %>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea
-                  class="form-control"
-                  name="description"
-                  rows="3"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Price <span class="text-danger">*</span></label
-                >
-                <div class="input-group">
-                  <span class="input-group-text">$</span>
-                  <input
-                    type="number"
-                    class="form-control"
-                    name="price"
-                    step="0.01"
-                    required
-                  />
+                <div class="position-relative">
+                  <input type="text" class="form-control rounded-pill shadow-sm ps-3 pe-5" id="searchInput"
+                    placeholder="Tìm kiếm theo tên, mô tả, danh mục..." onkeyup="debounceSearch(this.value)" />
+                  <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label"
-                  >Initial Stock <span class="text-danger">*</span></label
-                >
-                <input
-                  type="number"
-                  class="form-control"
-                  name="stock"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Unit</label>
-                <select class="form-select" name="unit">
-                  <option value="">Select Unit</option>
-                  <option value="pieces">Pieces</option>
-                  <option value="kg">Kilograms</option>
-                  <option value="boxes">Boxes</option>
-                  <option value="liters">Liters</option>
-                  <option value="packs">Packs</option>
-                </select>
+
+                <!-- Link Bootstrap Icons nếu chưa có -->
+                <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
               </div>
             </div>
+          </div>
 
-            <!-- Thông tin chi tiết -->
-            <div class="col-md-6">
-              <h6 class="mb-3">Detailed Information</h6>
-              <div class="mb-3">
-                <label class="form-label">Manufacturing Date</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="manufacturingDate"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Expiry Date</label>
-                <input type="date" class="form-control" name="expiryDate" />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Barcode</label>
-                <div class="input-group">
-                  <input type="text" class="form-control" name="barcode" />
-                  <button
-                    class="btn btn-outline-secondary"
-                    type="button"
-                    onclick="generateBarcode()"
-                  >
-                    Generate
-                  </button>
+          <!-- Products Table -->
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" id="productsTable">
+                <thead>
+                  <tr>
+                    <th>ID</th>
+                    <th>Image</th>
+                    <th>Name</th>
+                    <th>Category</th>
+                    <th>Price</th>
+                    <th>Stock</th>
+                    <th>Expiry Date</th>
+                    <th>Origin</th>
+                    <th>Actions</th>
+                  </tr>
+                </thead>
+                <tbody id="productsTableBody">
+                  <!-- Table content will be dynamically updated -->
+                </tbody>
+              </table>
+            </div>
+            <!-- No results message -->
+            <div id="noResults" class="text-center py-3 d-none">
+              <i class="fas fa-search fa-3x text-gray-300 mb-3"></i>
+              <p class="text-gray-500">
+                No products found matching your search criteria
+              </p>
+            </div>
+          </div>
+        </div>
+  </div>
+
+  <!-- Add Product Modal -->
+  <div class="modal fade" id="addProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form action="/admin/products" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="row">
+              <!-- Thông tin cơ bản -->
+              <div class="col-md-6">
+                <h6 class="mb-3">Basic Information</h6>
+                <div class="mb-3">
+                  <label class="form-label">Product Name <span class="text-danger">*</span></label>
+                  <input type="text" class="form-control" name="name" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Category <span class="text-danger">*</span></label>
+                  <select class="form-select" name="categoryId" required>
+                    <option value="">Select Category</option>
+                    <% categories.forEach(function(category) { %>
+                      <option value="<%= category.id %>">
+                        <%= category.name %>
+                      </option>
+                      <% }); %>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" name="description" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Price <span class="text-danger">*</span></label>
+                  <div class="input-group">
+                    <span class="input-group-text">$</span>
+                    <input type="number" class="form-control" name="price" step="0.01" required />
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Initial Stock <span class="text-danger">*</span></label>
+                  <input type="number" class="form-control" name="stock" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Unit</label>
+                  <select class="form-select" name="unit">
+                    <option value="">Select Unit</option>
+                    <option value="pieces">Pieces</option>
+                    <option value="kg">Kilograms</option>
+                    <option value="boxes">Boxes</option>
+                    <option value="liters">Liters</option>
+                    <option value="packs">Packs</option>
+                  </select>
                 </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Manufacturer</label>
-                <input type="text" class="form-control" name="manufacturer" />
-              </div>
 
-              <!-- Thông tin xuất xứ chi tiết -->
-              <div class="mb-3">
-                <label class="form-label">Origin Details</label>
-                <div class="card">
-                  <div class="card-body">
-                    <div class="mb-2">
-                      <label class="form-label">Country</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="originCountry"
-                        placeholder="Enter country of origin"
-                      />
-                    </div>
-                    <div class="mb-2">
-                      <label class="form-label">Province/City</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="originCity"
-                        placeholder="Enter province or city"
-                      />
-                    </div>
-                    <div class="mb-2">
-                      <label class="form-label">District</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="originDistrict"
-                        placeholder="Enter district"
-                      />
-                    </div>
-                    <div class="mb-2">
-                      <label class="form-label">Ward/Commune</label>
-                      <input
-                        type="text"
-                        class="form-control"
-                        name="originWard"
-                        placeholder="Enter ward or commune"
-                      />
-                    </div>
-                    <div class="mb-2">
-                      <label class="form-label">Detailed Address</label>
-                      <textarea
-                        class="form-control"
-                        name="originDetailedAddress"
-                        rows="2"
-                        placeholder="Enter detailed address"
-                      ></textarea>
+              <!-- Thông tin chi tiết -->
+              <div class="col-md-6">
+                <h6 class="mb-3">Detailed Information</h6>
+                <div class="mb-3">
+                  <label class="form-label">Manufacturing Date</label>
+                  <input type="date" class="form-control" name="manufacturingDate" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Expiry Date</label>
+                  <input type="date" class="form-control" name="expiryDate" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Barcode</label>
+                  <div class="input-group">
+                    <input type="text" class="form-control" name="barcode" />
+                    <button class="btn btn-outline-secondary" type="button" onclick="generateBarcode()">
+                      Generate
+                    </button>
+                  </div>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Manufacturer</label>
+                  <input type="text" class="form-control" name="manufacturer" />
+                </div>
+
+                <!-- Thông tin xuất xứ chi tiết -->
+                <div class="mb-3">
+                  <label class="form-label">Origin Details</label>
+                  <div class="card">
+                    <div class="card-body">
+                      <div class="mb-2">
+                        <label class="form-label">Country</label>
+                        <input type="text" class="form-control" name="originCountry"
+                          placeholder="Enter country of origin" />
+                      </div>
+                      <div class="mb-2">
+                        <label class="form-label">Province/City</label>
+                        <input type="text" class="form-control" name="originCity"
+                          placeholder="Enter province or city" />
+                      </div>
+                      <div class="mb-2">
+                        <label class="form-label">District</label>
+                        <input type="text" class="form-control" name="originDistrict" placeholder="Enter district" />
+                      </div>
+                      <div class="mb-2">
+                        <label class="form-label">Ward/Commune</label>
+                        <input type="text" class="form-control" name="originWard" placeholder="Enter ward or commune" />
+                      </div>
+                      <div class="mb-2">
+                        <label class="form-label">Detailed Address</label>
+                        <textarea class="form-control" name="originDetailedAddress" rows="2"
+                          placeholder="Enter detailed address"></textarea>
+                      </div>
                     </div>
                   </div>
                 </div>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Product Image</label>
-                <input
-                  type="file"
-                  class="form-control"
-                  name="image"
-                  accept="image/*"
-                  onchange="previewImage(this)"
-                />
-                <div id="imagePreview" class="mt-2"></div>
+                <div class="mb-3">
+                  <label class="form-label">Product Image</label>
+                  <input type="file" class="form-control" name="image" accept="image/*" onchange="previewImage(this)" />
+                  <div id="imagePreview" class="mt-2"></div>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="submit" class="btn btn-primary">Add Product</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
-
-<!-- Edit Product Modal -->
-<div class="modal fade" id="editProductModal" tabindex="-1">
-  <div class="modal-dialog modal-lg">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Edit Product</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Add Product</button>
+          </div>
+        </form>
       </div>
-      <form id="editProductForm" method="POST" enctype="multipart/form-data">
-        <div class="modal-body">
-          <div class="row">
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">Product Name</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="name"
-                  id="editName"
-                  required
-                />
+    </div>
+  </div>
+
+  <!-- Edit Product Modal -->
+  <div class="modal fade" id="editProductModal" tabindex="-1">
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Edit Product</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="editProductForm" method="POST" enctype="multipart/form-data">
+          <div class="modal-body">
+            <div class="row">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Product Name</label>
+                  <input type="text" class="form-control" name="name" id="editName" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Category</label>
+                  <select class="form-select" name="categoryId" id="editCategory" required>
+                    <option value="">Select Category</option>
+                    <% categories.forEach(function(category) { %>
+                      <option value="<%= category.id %>">
+                        <%= category.name %>
+                      </option>
+                      <% }); %>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Description</label>
+                  <textarea class="form-control" name="description" id="editDescription" rows="3"></textarea>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Price</label>
+                  <input type="number" class="form-control" name="price" id="editPrice" step="0.01" required />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Stock</label>
+                  <input type="number" class="form-control" name="stock" id="editStock" required />
+                </div>
               </div>
-              <div class="mb-3">
-                <label class="form-label">Category</label>
-                <select
-                  class="form-select"
-                  name="categoryId"
-                  id="editCategory"
-                  required
-                >
-                  <option value="">Select Category</option>
-                  <% categories.forEach(function(category) { %>
-                  <option value="<%= category.id %>">
-                    <%= category.name %>
-                  </option>
-                  <% }); %>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Description</label>
-                <textarea
-                  class="form-control"
-                  name="description"
-                  id="editDescription"
-                  rows="3"
-                ></textarea>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Price</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  name="price"
-                  id="editPrice"
-                  step="0.01"
-                  required
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Stock</label>
-                <input
-                  type="number"
-                  class="form-control"
-                  name="stock"
-                  id="editStock"
-                  required
-                />
-              </div>
-            </div>
-            <div class="col-md-6">
-              <div class="mb-3">
-                <label class="form-label">Manufacturing Date</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="manufacturingDate"
-                  id="editManufacturingDate"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Expiry Date</label>
-                <input
-                  type="date"
-                  class="form-control"
-                  name="expiryDate"
-                  id="editExpiryDate"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Origin</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="origin"
-                  id="editOrigin"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Manufacturer</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="manufacturer"
-                  id="editManufacturer"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Barcode</label>
-                <input
-                  type="text"
-                  class="form-control"
-                  name="barcode"
-                  id="editBarcode"
-                />
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Unit</label>
-                <select class="form-select" name="unit" id="editUnit">
-                  <option value="">Select Unit</option>
-                  <option value="pieces">Pieces</option>
-                  <option value="kg">Kilograms</option>
-                  <option value="boxes">Boxes</option>
-                  <option value="liters">Liters</option>
-                </select>
-              </div>
-              <div class="mb-3">
-                <label class="form-label">Current Image</label>
-                <div id="currentImageContainer" class="mb-2"></div>
-                <input
-                  type="file"
-                  class="form-control"
-                  name="image"
-                  accept="image/*"
-                />
-                <small class="text-muted"
-                  >Leave empty to keep current image</small
-                >
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="form-label">Manufacturing Date</label>
+                  <input type="date" class="form-control" name="manufacturingDate" id="editManufacturingDate" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Expiry Date</label>
+                  <input type="date" class="form-control" name="expiryDate" id="editExpiryDate" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Origin</label>
+                  <input type="text" class="form-control" name="origin" id="editOrigin" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Manufacturer</label>
+                  <input type="text" class="form-control" name="manufacturer" id="editManufacturer" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Barcode</label>
+                  <input type="text" class="form-control" name="barcode" id="editBarcode" />
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Unit</label>
+                  <select class="form-select" name="unit" id="editUnit">
+                    <option value="">Select Unit</option>
+                    <option value="pieces">Pieces</option>
+                    <option value="kg">Kilograms</option>
+                    <option value="boxes">Boxes</option>
+                    <option value="liters">Liters</option>
+                  </select>
+                </div>
+                <div class="mb-3">
+                  <label class="form-label">Current Image</label>
+                  <div id="currentImageContainer" class="mb-2"></div>
+                  <input type="file" class="form-control" name="image" accept="image/*" />
+                  <small class="text-muted">Leave empty to keep current image</small>
+                </div>
               </div>
             </div>
           </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="submit" class="btn btn-primary">Update Product</button>
-        </div>
-      </form>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Update Product</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
-</div>
 
-<script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
-<script>
-  let map, marker, autocomplete, place;
+  <script src="https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places"></script>
+  <script id="products-data" type="application/json">
+    <%- JSON.stringify(products) %>
+  </script>
+  <script>
+    let map, marker, autocomplete, place;
 
-  function initMap() {
-    // Khởi tạo bản đồ
-    map = new google.maps.Map(document.getElementById("map"), {
-      center: { lat: 21.0285, lng: 105.8542 }, // Tọa độ mặc định (Hà Nội)
-      zoom: 13,
-    });
+    function initMap() {
+      // Khởi tạo bản đồ
+      map = new google.maps.Map(document.getElementById("map"), {
+        center: { lat: 21.0285, lng: 105.8542 }, // Tọa độ mặc định (Hà Nội)
+        zoom: 13,
+      });
 
-    // Khởi tạo marker
-    marker = new google.maps.Marker({
-      map: map,
-      draggable: true,
-    });
+      // Khởi tạo marker
+      marker = new google.maps.Marker({
+        map: map,
+        draggable: true,
+      });
 
-    // Khởi tạo Autocomplete
-    autocomplete = new google.maps.places.Autocomplete(
-      document.getElementById("searchAddress"),
-      { types: ["address"] }
-    );
-
-    // Liên kết Autocomplete với bản đồ
-    autocomplete.bindTo("bounds", map);
-
-    // Xử lý sự kiện khi chọn địa điểm
-    autocomplete.addListener("place_changed", function () {
-      place = autocomplete.getPlace();
-      if (!place.geometry) {
-        return;
-      }
-
-      // Cập nhật bản đồ
-      updateMapAndMarker(place.geometry.location);
-      // Phân tích và điền thông tin địa chỉ
-      fillAddressComponents(place.address_components);
-      // Cập nhật địa chỉ đầy đủ
-      document.getElementById("fullAddress").value = place.formatted_address;
-    });
-
-    // Xử lý sự kiện khi kéo marker
-    google.maps.event.addListener(marker, "dragend", function () {
-      const position = marker.getPosition();
-      reverseGeocode(position);
-    });
-  }
-
-  function updateMapAndMarker(location) {
-    map.setCenter(location);
-    map.setZoom(15);
-    marker.setPosition(location);
-
-    // Cập nhật tọa độ
-    document.getElementById("latitude").value = location.lat();
-    document.getElementById("longitude").value = location.lng();
-  }
-
-  function fillAddressComponents(components) {
-    // Reset all fields
-    const fields = {
-      country: "",
-      city: "",
-      district: "",
-      ward: "",
-      street: "",
-      postalCode: "",
-    };
-
-    // Phân tích từng thành phần địa chỉ
-    components.forEach((component) => {
-      const type = component.types[0];
-
-      switch (type) {
-        case "country":
-          fields.country = component.long_name;
-          break;
-        case "administrative_area_level_1":
-          fields.city = component.long_name;
-          break;
-        case "administrative_area_level_2":
-          fields.district = component.long_name;
-          break;
-        case "administrative_area_level_3":
-          fields.ward = component.long_name;
-          break;
-        case "route":
-          fields.street = component.long_name;
-          break;
-        case "postal_code":
-          fields.postalCode = component.long_name;
-          break;
-      }
-    });
-
-    // Điền thông tin vào form
-    document.getElementById("country").value = fields.country;
-    document.getElementById("city").value = fields.city;
-    document.getElementById("district").value = fields.district;
-    document.getElementById("ward").value = fields.ward;
-    document.getElementById("street").value = fields.street;
-    document.getElementById("postalCode").value = fields.postalCode;
-  }
-
-  function getCurrentLocation() {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          const pos = {
-            lat: position.coords.latitude,
-            lng: position.coords.longitude,
-          };
-          updateMapAndMarker(pos);
-          reverseGeocode(pos);
-        },
-        () => {
-          alert("Error: The Geolocation service failed.");
-        }
+      // Khởi tạo Autocomplete
+      autocomplete = new google.maps.places.Autocomplete(
+        document.getElementById("searchAddress"),
+        { types: ["address"] }
       );
-    } else {
-      alert("Error: Your browser doesn't support geolocation.");
-    }
-  }
 
-  function reverseGeocode(position) {
-    const geocoder = new google.maps.Geocoder();
-    geocoder.geocode({ location: position }, (results, status) => {
-      if (status === "OK" && results[0]) {
-        fillAddressComponents(results[0].address_components);
-        document.getElementById("fullAddress").value =
-          results[0].formatted_address;
-        document.getElementById("searchAddress").value =
-          results[0].formatted_address;
+      // Liên kết Autocomplete với bản đồ
+      autocomplete.bindTo("bounds", map);
+
+      // Xử lý sự kiện khi chọn địa điểm
+      autocomplete.addListener("place_changed", function () {
+        place = autocomplete.getPlace();
+        if (!place.geometry) {
+          return;
+        }
+
+        // Cập nhật bản đồ
+        updateMapAndMarker(place.geometry.location);
+        // Phân tích và điền thông tin địa chỉ
+        fillAddressComponents(place.address_components);
+        // Cập nhật địa chỉ đầy đủ
+        document.getElementById("fullAddress").value = place.formatted_address;
+      });
+
+      // Xử lý sự kiện khi kéo marker
+      google.maps.event.addListener(marker, "dragend", function () {
+        const position = marker.getPosition();
+        reverseGeocode(position);
+      });
+    }
+
+    function updateMapAndMarker(location) {
+      map.setCenter(location);
+      map.setZoom(15);
+      marker.setPosition(location);
+
+      // Cập nhật tọa độ
+      document.getElementById("latitude").value = location.lat();
+      document.getElementById("longitude").value = location.lng();
+    }
+
+    function fillAddressComponents(components) {
+      // Reset all fields
+      const fields = {
+        country: "",
+        city: "",
+        district: "",
+        ward: "",
+        street: "",
+        postalCode: "",
+      };
+
+      // Phân tích từng thành phần địa chỉ
+      components.forEach((component) => {
+        const type = component.types[0];
+
+        switch (type) {
+          case "country":
+            fields.country = component.long_name;
+            break;
+          case "administrative_area_level_1":
+            fields.city = component.long_name;
+            break;
+          case "administrative_area_level_2":
+            fields.district = component.long_name;
+            break;
+          case "administrative_area_level_3":
+            fields.ward = component.long_name;
+            break;
+          case "route":
+            fields.street = component.long_name;
+            break;
+          case "postal_code":
+            fields.postalCode = component.long_name;
+            break;
+        }
+      });
+
+      // Điền thông tin vào form
+      document.getElementById("country").value = fields.country;
+      document.getElementById("city").value = fields.city;
+      document.getElementById("district").value = fields.district;
+      document.getElementById("ward").value = fields.ward;
+      document.getElementById("street").value = fields.street;
+      document.getElementById("postalCode").value = fields.postalCode;
+    }
+
+    function getCurrentLocation() {
+      if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+          (position) => {
+            const pos = {
+              lat: position.coords.latitude,
+              lng: position.coords.longitude,
+            };
+            updateMapAndMarker(pos);
+            reverseGeocode(pos);
+          },
+          () => {
+            alert("Error: The Geolocation service failed.");
+          }
+        );
+      } else {
+        alert("Error: Your browser doesn't support geolocation.");
       }
-    });
-  }
-
-  // Khởi tạo Google Maps khi trang load
-  document.addEventListener("DOMContentLoaded", function () {
-    // Load Google Maps API
-    if (typeof google === "undefined") {
-      const script = document.createElement("script");
-      script.src =
-        "https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap";
-      script.async = true;
-      script.defer = true;
-      document.head.appendChild(script);
-    } else {
-      initMap();
-    }
-  });
-
-  function editProduct(productJson) {
-    const product = JSON.parse(productJson);
-    document.getElementById(
-      "editProductForm"
-    ).action = `/admin/products/${product.id}?_method=PUT`;
-
-    // Fill all form fields
-    document.getElementById("editName").value = product.name;
-    document.getElementById("editCategory").value = product.categoryId;
-    document.getElementById("editDescription").value = product.description;
-    document.getElementById("editPrice").value = product.price;
-    document.getElementById("editStock").value = product.stock;
-    document.getElementById("editOrigin").value = product.origin || "";
-    document.getElementById("editManufacturer").value =
-      product.manufacturer || "";
-    document.getElementById("editBarcode").value = product.barcode || "";
-    document.getElementById("editUnit").value = product.unit || "";
-
-    // Format dates for input fields
-    if (product.manufacturingDate) {
-      document.getElementById("editManufacturingDate").value = new Date(
-        product.manufacturingDate
-      )
-        .toISOString()
-        .split("T")[0];
-    }
-    if (product.expiryDate) {
-      document.getElementById("editExpiryDate").value = new Date(
-        product.expiryDate
-      )
-        .toISOString()
-        .split("T")[0];
     }
 
-    // Show current image
-    const imageContainer = document.getElementById("currentImageContainer");
-    if (product.image) {
-      imageContainer.innerHTML = `
-        <img src="${product.image}" alt="${product.name}"
-             style="max-width: 100px; max-height: 100px; object-fit: cover;">
-      `;
-    } else {
-      imageContainer.innerHTML = '<p class="text-muted">No current image</p>';
-    }
-  }
-
-  function deleteProduct(id) {
-    if (confirm("Are you sure you want to delete this product?")) {
-      fetch(`/admin/products/${id}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-        },
-      }).then((response) => {
-        if (response.ok) {
-          window.location.reload();
+    function reverseGeocode(position) {
+      const geocoder = new google.maps.Geocoder();
+      geocoder.geocode({ location: position }, (results, status) => {
+        if (status === "OK" && results[0]) {
+          fillAddressComponents(results[0].address_components);
+          document.getElementById("fullAddress").value =
+            results[0].formatted_address;
+          document.getElementById("searchAddress").value =
+            results[0].formatted_address;
         }
       });
     }
-  }
 
-  // Initialize tooltips
-  document.addEventListener("DOMContentLoaded", function () {
-    var tooltipTriggerList = [].slice.call(
-      document.querySelectorAll('[data-bs-toggle="tooltip"]')
-    );
-    var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
-      return new bootstrap.Tooltip(tooltipTriggerEl);
+    // Khởi tạo Google Maps khi trang load
+    document.addEventListener("DOMContentLoaded", function () {
+      // Load Google Maps API
+      if (typeof google === "undefined") {
+        const script = document.createElement("script");
+        script.src =
+          "https://maps.googleapis.com/maps/api/js?key=YOUR_GOOGLE_MAPS_API_KEY&libraries=places&callback=initMap";
+        script.async = true;
+        script.defer = true;
+        document.head.appendChild(script);
+      } else {
+        initMap();
+      }
     });
-  });
 
-  // Preview image before upload
-  function previewImage(input) {
-    const preview = document.getElementById("imagePreview");
-    if (input.files && input.files[0]) {
-      const reader = new FileReader();
-      reader.onload = function (e) {
-        preview.innerHTML = `
+    function editProduct(productInput) {
+      let product;
+      if (typeof productInput === "number" || (typeof productInput === "string" && !isNaN(productInput))) {
+        product = products.find(p => p.id == productInput);
+      } else if (typeof productInput === "string") {
+        try {
+          product = JSON.parse(productInput);
+        } catch (e) {
+          product = products.find(p => p.id == productInput);
+        }
+      } else {
+        product = productInput;
+      }
+      if (!product) return;
+      document.getElementById(
+        "editProductForm"
+      ).action = `/admin/products/${product.id}?_method=PUT`;
+
+      // Fill all form fields
+      document.getElementById("editName").value = product.name;
+      document.getElementById("editCategory").value = product.categoryId;
+      document.getElementById("editDescription").value = product.description;
+      document.getElementById("editPrice").value = product.price;
+      document.getElementById("editStock").value = product.stock;
+      document.getElementById("editOrigin").value = product.origin || "";
+      document.getElementById("editManufacturer").value =
+        product.manufacturer || "";
+      document.getElementById("editBarcode").value = product.barcode || "";
+      document.getElementById("editUnit").value = product.unit || "";
+
+      // Format dates for input fields
+      if (product.manufacturingDate) {
+        document.getElementById("editManufacturingDate").value = new Date(
+          product.manufacturingDate
+        )
+          .toISOString()
+          .split("T")[0];
+      }
+      if (product.expiryDate) {
+        document.getElementById("editExpiryDate").value = new Date(
+          product.expiryDate
+        )
+          .toISOString()
+          .split("T")[0];
+      }
+
+      // Show current image
+      const imageContainer = document.getElementById("currentImageContainer");
+      if (product.image) {
+        imageContainer.innerHTML = `
+        <img src="${product.image}" alt="${product.name}"
+             style="max-width: 100px; max-height: 100px; object-fit: cover;">
+      `;
+      } else {
+        imageContainer.innerHTML = '<p class="text-muted">No current image</p>';
+      }
+    }
+
+    function deleteProduct(id) {
+      if (confirm("Are you sure you want to delete this product?")) {
+        fetch(`/admin/products/${id}`, {
+          method: "DELETE",
+          headers: {
+            "Content-Type": "application/json",
+          },
+        }).then((response) => {
+          if (response.ok) {
+            window.location.reload();
+          }
+        });
+      }
+    }
+
+    // Initialize tooltips
+    document.addEventListener("DOMContentLoaded", function () {
+      var tooltipTriggerList = [].slice.call(
+        document.querySelectorAll('[data-bs-toggle="tooltip"]')
+      );
+      var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+        return new bootstrap.Tooltip(tooltipTriggerEl);
+      });
+    });
+
+    // Preview image before upload
+    function previewImage(input) {
+      const preview = document.getElementById("imagePreview");
+      if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function (e) {
+          preview.innerHTML = `
           <img src="${e.target.result}" alt="Preview"
                style="max-width: 200px; max-height: 200px; object-fit: contain;">
         `;
+        };
+        reader.readAsDataURL(input.files[0]);
+      }
+    }
+
+    // Generate random barcode
+    function generateBarcode() {
+      const barcodeInput = document.querySelector('input[name="barcode"]');
+      const randomBarcode =
+        Math.floor(Math.random() * 9000000000000) + 1000000000000;
+      barcodeInput.value = randomBarcode;
+    }
+
+    // Validate dates
+    document.querySelector("form").addEventListener("submit", function (e) {
+      const mfgDate = new Date(
+        document.querySelector('input[name="manufacturingDate"]').value
+      );
+      const expDate = new Date(
+        document.querySelector('input[name="expiryDate"]').value
+      );
+
+      if (mfgDate && expDate && mfgDate > expDate) {
+        e.preventDefault();
+        alert("Manufacturing date cannot be later than expiry date!");
+      }
+    });
+
+    // Thêm thư viện Fuse.js cho tìm kiếm gần đúng
+    const fuseScript = document.createElement('script');
+    fuseScript.src = 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2';
+    document.head.appendChild(fuseScript);
+
+    let debounceTimer;
+    const productsDataElement = document.getElementById('products-data');
+    const products = productsDataElement ? JSON.parse(productsDataElement.textContent || '[]') : [];
+    let fuse;
+
+    // Khởi tạo Fuse.js khi trang được load
+    fuseScript.onload = function () {
+      const options = {
+        keys: ['name', 'description', 'category.name'],
+        threshold: 0.3, // Độ chính xác (0 = chính xác hoàn toàn, 1 = khớp hoàn toàn)
+        includeScore: true,
+        shouldSort: true,
+        minMatchCharLength: 2
       };
-      reader.readAsDataURL(input.files[0]);
-    }
-  }
-
-  // Generate random barcode
-  function generateBarcode() {
-    const barcodeInput = document.querySelector('input[name="barcode"]');
-    const randomBarcode =
-      Math.floor(Math.random() * 9000000000000) + 1000000000000;
-    barcodeInput.value = randomBarcode;
-  }
-
-  // Validate dates
-  document.querySelector("form").addEventListener("submit", function (e) {
-    const mfgDate = new Date(
-      document.querySelector('input[name="manufacturingDate"]').value
-    );
-    const expDate = new Date(
-      document.querySelector('input[name="expiryDate"]').value
-    );
-
-    if (mfgDate && expDate && mfgDate > expDate) {
-      e.preventDefault();
-      alert("Manufacturing date cannot be later than expiry date!");
-    }
-  });
-
-  // Thêm thư viện Fuse.js cho tìm kiếm gần đúng
-  const fuseScript = document.createElement('script');
-  fuseScript.src = 'https://cdn.jsdelivr.net/npm/fuse.js@6.6.2';
-  document.head.appendChild(fuseScript);
-
-  let debounceTimer;
-  const products = <%- JSON.stringify(products) %>;
-  let fuse;
-
-  // Khởi tạo Fuse.js khi trang được load
-  fuseScript.onload = function() {
-    const options = {
-      keys: ['name', 'description', 'category.name'],
-      threshold: 0.3, // Độ chính xác (0 = chính xác hoàn toàn, 1 = khớp hoàn toàn)
-      includeScore: true,
-      shouldSort: true,
-      minMatchCharLength: 2
+      fuse = new Fuse(products, options);
     };
-    fuse = new Fuse(products, options);
-  };
 
-  function debounceSearch(value) {
-    clearTimeout(debounceTimer);
-    debounceTimer = setTimeout(() => performSearch(value), 300);
-  }
-
-  function performSearch(searchTerm) {
-    if (!searchTerm) {
-      updateProductsTable(products);
-      return;
+    function debounceSearch(value) {
+      clearTimeout(debounceTimer);
+      debounceTimer = setTimeout(() => performSearch(value), 300);
     }
 
-    // Thực hiện tìm kiếm gần đúng với Fuse.js
-    const results = fuse.search(searchTerm);
+    function performSearch(searchTerm) {
+      if (!searchTerm) {
+        updateProductsTable(products);
+        return;
+      }
 
-    // Chuyển đổi kết quả tìm kiếm về định dạng sản phẩm
-    const filteredProducts = results.map(result => result.item);
+      // Thực hiện tìm kiếm gần đúng với Fuse.js
+      const results = fuse.search(searchTerm);
 
-    updateProductsTable(filteredProducts);
-  }
+      // Chuyển đổi kết quả tìm kiếm về định dạng sản phẩm
+      const filteredProducts = results.map(result => result.item);
 
-  function updateProductsTable(filteredProducts) {
-    const tbody = document.getElementById('productsTableBody');
-    const noResults = document.getElementById('noResults');
-
-    if (filteredProducts.length === 0) {
-      tbody.innerHTML = '';
-      noResults.classList.remove('d-none');
-      return;
+      updateProductsTable(filteredProducts);
     }
 
-    noResults.classList.add('d-none');
-    tbody.innerHTML = filteredProducts.map(product => `
+    function updateProductsTable(filteredProducts) {
+      const tbody = document.getElementById('productsTableBody');
+      const noResults = document.getElementById('noResults');
+
+      if (filteredProducts.length === 0) {
+        tbody.innerHTML = '';
+        noResults.classList.remove('d-none');
+        return;
+      }
+
+      noResults.classList.add('d-none');
+      tbody.innerHTML = filteredProducts.map(product => `
       <tr>
         <td>${product.id}</td>
         <td>
           ${product.image
-            ? `<img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;">`
-            : '<span class="text-muted">No image</span>'}
+          ? `<img src="${product.image}" alt="${product.name}" style="width: 50px; height: 50px; object-fit: cover;">`
+          : '<span class="text-muted">No image</span>'}
         </td>
         <td>${product.name}</td>
         <td>${product.category ? product.category.name : 'N/A'}</td>
@@ -825,7 +686,7 @@
         <td>${product.origin || 'N/A'}</td>
         <td>
           <button class="btn btn-sm btn-warning"
-                  onclick='editProduct(${JSON.stringify(product)});'
+                  onclick="editProduct(${product.id})"
                   data-bs-toggle="modal"
                   data-bs-target="#editProductModal">
             <i class="bi bi-pencil"></i> Edit
@@ -837,108 +698,108 @@
         </td>
       </tr>
     `).join('');
-  }
+    }
 
-  // Highlight matching text in search results
-  function highlightText(text, searchTerm) {
-    if (!searchTerm) return text;
-    const regex = new RegExp(`(${searchTerm})`, 'gi');
-    return text.replace(regex, '<mark>$1</mark>');
-  }
+    // Highlight matching text in search results
+    function highlightText(text, searchTerm) {
+      if (!searchTerm) return text;
+      const regex = new RegExp(`(${searchTerm})`, 'gi');
+      return text.replace(regex, '<mark>$1</mark>');
+    }
 
-  // Initialize search filters
-  document.addEventListener('DOMContentLoaded', function() {
-    // Initial table load
-    updateProductsTable(products);
+    // Initialize search filters
+    document.addEventListener('DOMContentLoaded', function () {
+      // Initial table load
+      updateProductsTable(products);
 
-    // Add event listeners to filters
-    document.querySelectorAll('.search-filter, #exactMatch').forEach(filter => {
+      // Add event listeners to filters
+      document.querySelectorAll('.search-filter, #exactMatch').forEach(filter => {
         filter.addEventListener('change', () => {
-            performSearch(document.getElementById('searchInput').value);
+          performSearch(document.getElementById('searchInput').value);
         });
+      });
     });
-  });
-</script>
+  </script>
 
-<style>
-  .modal-lg {
-    max-width: 1000px;
-  }
+  <style>
+    .modal-lg {
+      max-width: 1000px;
+    }
 
-  .card {
-    box-shadow: none;
-    border: 1px solid rgba(0, 0, 0, 0.125);
-  }
+    .card {
+      box-shadow: none;
+      border: 1px solid rgba(0, 0, 0, 0.125);
+    }
 
-  .form-label {
-    font-weight: 500;
-  }
+    .form-label {
+      font-weight: 500;
+    }
 
-  .text-danger {
-    color: #dc3545;
-  }
+    .text-danger {
+      color: #dc3545;
+    }
 
-  #imagePreview img {
-    border: 1px solid #ddd;
-    padding: 5px;
-    border-radius: 4px;
-  }
+    #imagePreview img {
+      border: 1px solid #ddd;
+      padding: 5px;
+      border-radius: 4px;
+    }
 
-  .card {
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
-  }
+    .card {
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
 
-  .input-group {
-    margin-bottom: 10px;
-  }
+    .input-group {
+      margin-bottom: 10px;
+    }
 
-  #map {
-    border-radius: 4px;
-    border: 1px solid #ddd;
-  }
+    #map {
+      border-radius: 4px;
+      border: 1px solid #ddd;
+    }
 
-  .form-select,
-  .form-control {
-    margin-bottom: 10px;
-  }
+    .form-select,
+    .form-control {
+      margin-bottom: 10px;
+    }
 
-  .form-control[readonly] {
-    background-color: #f8f9fa;
-    cursor: not-allowed;
-  }
+    .form-control[readonly] {
+      background-color: #f8f9fa;
+      cursor: not-allowed;
+    }
 
-  .btn-outline-secondary:hover {
-    background-color: #6c757d;
-    color: white;
-  }
+    .btn-outline-secondary:hover {
+      background-color: #6c757d;
+      color: white;
+    }
 
-  .search-box .dropdown-menu {
-    min-width: 200px;
-  }
+    .search-box .dropdown-menu {
+      min-width: 200px;
+    }
 
-  .search-box .dropdown-item {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-  }
+    .search-box .dropdown-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
 
-  .search-box .dropdown-item input[type="checkbox"] {
-    margin: 0;
-  }
+    .search-box .dropdown-item input[type="checkbox"] {
+      margin: 0;
+    }
 
-  mark {
-    background-color: #fff3cd;
-    padding: 0.2em;
-    border-radius: 2px;
-  }
+    mark {
+      background-color: #fff3cd;
+      padding: 0.2em;
+      border-radius: 2px;
+    }
 
-  #noResults {
-    color: #6c757d;
-  }
+    #noResults {
+      color: #6c757d;
+    }
 
-  .table img {
-    border-radius: 4px;
-  }
-</style>
+    .table img {
+      border-radius: 4px;
+    }
+  </style>
 
-<%- include('./partials/footer') %>
+  <%- include('./partials/footer') %>

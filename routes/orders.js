@@ -13,6 +13,10 @@ router.get("/:id", isAuth, orderController.getOrderDetail);
 router.get("/admin/list", isAuth, orderController.getAdminOrderList);
 
 // Admin: Cập nhật trạng thái đơn hàng
-router.post("/admin/update-status/:id", isAuth, orderController.updateOrderStatus);
+router.post(
+  "/admin/update-status/:id",
+  isAuth,
+  orderController.updateOrderStatus,
+);
 
 module.exports = router;

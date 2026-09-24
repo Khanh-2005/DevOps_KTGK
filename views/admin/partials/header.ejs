@@ -1,45 +1,33 @@
 <!DOCTYPE html>
 <html lang="vi">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Admin Dashboard</title>
-    <link rel="stylesheet" href="/css/bootstrap.min.css" />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css"
-    />
-    <script src="/js/bootstrap.bundle.min.js"></script>
-  </head>
-  <body>
-    <nav
-      class="navbar navbar-expand-lg navbar-dark"
-      style="background-color: #1b2a4e"
-    >
-      <div class="container">
-        <!-- Logo / Tên Dashboard -->
-        <a class="navbar-brand fw-bold text-uppercase" href="/admin/dashboard">
-          <i class="bi bi-speedometer2"></i> Admin Dashboard
-        </a>
 
-        <!-- Nút Toggle Mobile -->
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Dashboard</title>
+  <link rel="stylesheet" href="/css/bootstrap.min.css" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
+  <script src="/js/bootstrap.bundle.min.js"></script>
+</head>
 
-        <% if (typeof user !== 'undefined' && user) { %>
+<body>
+  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1b2a4e">
+    <div class="container">
+      <!-- Logo / Tên Dashboard -->
+      <a class="navbar-brand fw-bold text-uppercase" href="/admin/dashboard">
+        <i class="bi bi-speedometer2"></i> Admin Dashboard
+      </a>
+
+      <!-- Nút Toggle Mobile -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+
+      <% if (typeof user !=='undefined' && user) { %>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
             <li class="nav-item">
-              <a
-                class="nav-link text-light fw-semibold"
-                href="/admin/categories"
-              >
+              <a class="nav-link text-light fw-semibold" href="/admin/categories">
                 <i class="bi bi-list"></i> Categories
               </a>
             </li>
@@ -49,10 +37,7 @@
               </a>
             </li>
             <li class="nav-item">
-              <a
-                class="nav-link text-light fw-semibold"
-                href="/admin/inventory"
-              >
+              <a class="nav-link text-light fw-semibold" href="/admin/inventory">
                 <i class="bi bi-clipboard-data"></i> Inventory
               </a>
             </li>
@@ -73,34 +58,35 @@
           </ul>
         </div>
         <% } %>
-      </div>
-    </nav>
+    </div>
+  </nav>
 
-    <script>
-      // Đóng navbar khi nhấn vào một mục menu trên mobile
-      document.addEventListener("DOMContentLoaded", function () {
-        let navbarToggler = document.querySelector(".navbar-toggler");
-        let navbarCollapse = document.querySelector(".navbar-collapse");
+  <script>
+    // Đóng navbar khi nhấn vào một mục menu trên mobile
+    document.addEventListener("DOMContentLoaded", function () {
+      let navbarToggler = document.querySelector(".navbar-toggler");
+      let navbarCollapse = document.querySelector(".navbar-collapse");
 
-        document.querySelectorAll(".navbar-nav a").forEach((link) => {
-          link.addEventListener("click", function () {
-            if (window.innerWidth < 992) {
-              // Chỉ áp dụng trên mobile
-              navbarToggler.click(); // Kích hoạt toggle để đóng navbar
-            }
-          });
-        });
-
-        // Đóng navbar khi nhấn bên ngoài
-        document.addEventListener("click", function (event) {
-          let isClickInside =
-            navbarCollapse.contains(event.target) ||
-            navbarToggler.contains(event.target);
-          if (!isClickInside && navbarCollapse.classList.contains("show")) {
-            navbarToggler.click();
+      document.querySelectorAll(".navbar-nav a").forEach((link) => {
+        link.addEventListener("click", function () {
+          if (window.innerWidth < 992) {
+            // Chỉ áp dụng trên mobile
+            navbarToggler.click(); // Kích hoạt toggle để đóng navbar
           }
         });
       });
-    </script>
-  </body>
+
+      // Đóng navbar khi nhấn bên ngoài
+      document.addEventListener("click", function (event) {
+        let isClickInside =
+          navbarCollapse.contains(event.target) ||
+          navbarToggler.contains(event.target);
+        if (!isClickInside && navbarCollapse.classList.contains("show")) {
+          navbarToggler.click();
+        }
+      });
+    });
+  </script>
+</body>
+
 </html>

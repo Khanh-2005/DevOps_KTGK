@@ -1,387 +1,398 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Online Store</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <!-- Google Fonts -->
-    <link
-      href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <style>
-      :root {
-        --primary-color: #4e73df;
-        --primary-color-hover: #2e59d9;
-        --secondary-color: #f8f9fa;
-        --text-color: #333;
-      }
 
-      body {
-        font-family: "Poppins", sans-serif;
-        color: var(--text-color);
-      }
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Store</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <!-- Google Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --primary-color: #4e73df;
+      --primary-color-hover: #2e59d9;
+      --secondary-color: #f8f9fa;
+      --text-color: #333;
+    }
 
-      /* Navbar */
-      .navbar {
-        background-color: var(--secondary-color);
-        transition: background-color 0.3s;
-      }
-      .navbar-brand {
-        font-size: 1.8rem;
-        font-weight: 700;
-        color: var(--primary-color) !important;
-      }
-      .navbar-nav .nav-link {
-        font-size: 1rem;
-        margin: 0 0.5rem;
-      }
-      .navbar-nav .nav-link:hover {
-        color: var(--primary-color-hover) !important;
-      }
+    body {
+      font-family: "Poppins", sans-serif;
+      color: var(--text-color);
+    }
 
-      /* Search Form */
-      .search-form .form-control {
-        border-radius: 50px 0 0 50px;
-      }
-      .search-form .btn {
-        border-radius: 0 50px 50px 0;
-      }
+    /* Navbar */
+    .navbar {
+      background-color: var(--secondary-color);
+      transition: background-color 0.3s;
+    }
 
-      /* Hero Section */
-      .hero {
-        background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
-          url("/images/hero-bg.jpg") center/cover no-repeat;
-        color: #fff;
-        padding: 120px 0;
-        text-align: center;
-      }
-      .hero h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
-      }
-      .hero p {
-        font-size: 1.2rem;
-        margin-bottom: 30px;
-        text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
-      }
-      .hero a.btn {
-        padding: 12px 30px;
-        font-size: 1.1rem;
-      }
+    .navbar-brand {
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: var(--primary-color) !important;
+    }
 
-      /* Card Styles */
-      .card {
-        border: none;
-        border-radius: 15px;
-        overflow: hidden;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
-        transition: transform 0.3s ease, box-shadow 0.3s ease;
-      }
-      .card:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
-      }
-      .card img {
-        height: 200px;
-        object-fit: cover;
-      }
-      .card-title {
-        font-weight: 600;
-        margin-top: 15px;
-      }
-      .product-price {
-        color: var(--primary-color);
-        font-size: 1.2rem;
-        font-weight: 700;
-      }
+    .navbar-nav .nav-link {
+      font-size: 1rem;
+      margin: 0 0.5rem;
+    }
 
-      /* Footer */
-      .footer {
-        background-color: var(--secondary-color);
-        padding: 40px 0;
-      }
-      .footer h5 {
-        font-weight: 600;
-        margin-bottom: 15px;
-      }
-      .footer a {
-        color: var(--text-color);
-        text-decoration: none;
-        transition: color 0.3s;
-      }
-      .footer a:hover {
-        color: var(--primary-color-hover);
-      }
-      .social-links a {
-        font-size: 1.5rem;
-        margin: 0 10px;
-        color: var(--primary-color);
-        transition: color 0.3s;
-      }
-      .social-links a:hover {
-        color: var(--primary-color-hover);
-      }
+    .navbar-nav .nav-link:hover {
+      color: var(--primary-color-hover) !important;
+    }
 
-      /* Notification */
-      .notification {
-        position: fixed;
-        top: 20px;
-        right: -320px;
-        background-color: #fff;
-        border-radius: 8px;
-        padding: 15px 25px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-        transition: right 0.4s ease;
-        z-index: 1050;
-      }
-      .notification.show {
-        right: 20px;
-      }
-      .notification.success {
-        border-left: 5px solid #28a745;
-      }
-      .notification.error {
-        border-left: 5px solid #dc3545;
-      }
-      .notification i {
-        font-size: 1.5rem;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <i class="fas fa-store me-2"></i>Online Store
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <form class="search-form mx-auto d-flex">
-            <div class="input-group">
-              <input
-                type="search"
-                class="form-control"
-                placeholder="Search products..."
-              />
-              <button class="btn btn-primary" type="submit">
-                <i class="fas fa-search"></i>
-              </button>
-            </div>
-          </form>
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link" href="/cart">
-                <i class="fas fa-shopping-cart"></i>
-                <span class="badge bg-primary">0</span>
-              </a>
-            </li>
-            <% if (user) { %>
+    /* Search Form */
+    .search-form .form-control {
+      border-radius: 50px 0 0 50px;
+    }
+
+    .search-form .btn {
+      border-radius: 0 50px 50px 0;
+    }
+
+    /* Hero Section */
+    .hero {
+      background: linear-gradient(rgba(0, 0, 0, 0.6), rgba(0, 0, 0, 0.6)),
+        url("/images/hero-bg.jpg") center/cover no-repeat;
+      color: #fff;
+      padding: 120px 0;
+      text-align: center;
+    }
+
+    .hero h1 {
+      font-size: 3rem;
+      font-weight: 700;
+      text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+    }
+
+    .hero p {
+      font-size: 1.2rem;
+      margin-bottom: 30px;
+      text-shadow: 1px 1px 6px rgba(0, 0, 0, 0.6);
+    }
+
+    .hero a.btn {
+      padding: 12px 30px;
+      font-size: 1.1rem;
+    }
+
+    /* Card Styles */
+    .card {
+      border: none;
+      border-radius: 15px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(0, 0, 0, 0.15);
+    }
+
+    .card img {
+      height: 200px;
+      object-fit: cover;
+    }
+
+    .card-title {
+      font-weight: 600;
+      margin-top: 15px;
+    }
+
+    .product-price {
+      color: var(--primary-color);
+      font-size: 1.2rem;
+      font-weight: 700;
+    }
+
+    /* Footer */
+    .footer {
+      background-color: var(--secondary-color);
+      padding: 40px 0;
+    }
+
+    .footer h5 {
+      font-weight: 600;
+      margin-bottom: 15px;
+    }
+
+    .footer a {
+      color: var(--text-color);
+      text-decoration: none;
+      transition: color 0.3s;
+    }
+
+    .footer a:hover {
+      color: var(--primary-color-hover);
+    }
+
+    .social-links a {
+      font-size: 1.5rem;
+      margin: 0 10px;
+      color: var(--primary-color);
+      transition: color 0.3s;
+    }
+
+    .social-links a:hover {
+      color: var(--primary-color-hover);
+    }
+
+    /* Notification */
+    .notification {
+      position: fixed;
+      top: 20px;
+      right: -320px;
+      background-color: #fff;
+      border-radius: 8px;
+      padding: 15px 25px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+      transition: right 0.4s ease;
+      z-index: 1050;
+    }
+
+    .notification.show {
+      right: 20px;
+    }
+
+    .notification.success {
+      border-left: 5px solid #28a745;
+    }
+
+    .notification.error {
+      border-left: 5px solid #dc3545;
+    }
+
+    .notification i {
+      font-size: 1.5rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg shadow-sm sticky-top">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-store me-2"></i>Online Store
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <form class="search-form mx-auto d-flex" action="/products" method="GET">
+          <div class="input-group">
+            <input type="search" name="search" class="form-control" placeholder="Search products..." />
+            <button class="btn btn-primary" type="submit">
+              <i class="fas fa-search"></i>
+            </button>
+          </div>
+        </form>
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link" href="/cart">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="badge bg-primary">0</span>
+            </a>
+          </li>
+          <% if (user) { %>
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                data-bs-toggle="dropdown"
-              >
-                <i class="fas fa-user me-2"></i><%= user.name %>
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                <i class="fas fa-user me-2"></i>
+                <%= user.name %>
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/profile">Profile</a></li>
                 <li><a class="dropdown-item" href="/orders">My Orders</a></li>
-                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
               </ul>
             </li>
             <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-            </li>
-            <% } %>
-          </ul>
-        </div>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+              <% } %>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <!-- Hero Section -->
-    <section class="hero">
-      <div class="container">
-        <h1 class="display-4 mb-4">Welcome to Our Store</h1>
-        <p class="lead mb-4">Discover amazing products at great prices</p>
-        <a href="#categories" class="btn btn-primary btn-lg">
-          Start Shopping
-        </a>
-      </div>
-    </section>
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <h1 class="display-4 mb-4">Welcome to Our Store</h1>
+      <p class="lead mb-4">Discover amazing products at great prices</p>
+      <a href="#categories" class="btn btn-primary btn-lg">
+        Start Shopping
+      </a>
+    </div>
+  </section>
 
-    <!-- Categories Section -->
-    <section id="categories" class="container mb-5">
-      <h2 class="text-center mb-4">Shop by Category</h2>
-      <div class="row">
-        <% categories.forEach(function(category) { %>
+  <!-- Categories Section -->
+  <section id="categories" class="container mb-5">
+    <h2 class="text-center mb-4">Shop by Category</h2>
+    <div class="row">
+      <% categories.forEach(function(category) { %>
         <div class="col-md-4 mb-4">
           <div class="card">
-            <img
-              src="<%= category.image || '/images/default-category.jpg' %>"
-              class="card-img-top"
-              alt="<%= category.name %>"
-            />
+            <img src="<%= category.image || '/images/default-category.jpg' %>" class="card-img-top"
+              alt="<%= category.name %>" />
             <div class="card-body text-center">
-              <h5 class="card-title"><%= category.name %></h5>
-              <a
-                href="/category/<%= category.id %>"
-                class="btn btn-outline-primary"
-              >
+              <h5 class="card-title">
+                <%= category.name %>
+              </h5>
+              <a href="/category/<%= category.id %>" class="btn btn-outline-primary">
                 View Products
               </a>
             </div>
           </div>
         </div>
         <% }); %>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Featured Products -->
-    <section class="container mb-5">
-      <h2 class="text-center mb-4">Featured Products</h2>
-      <div class="row">
-        <% products.forEach(function(product) { %>
+  <!-- Featured Products -->
+  <section class="container mb-5">
+    <h2 class="text-center mb-4">Featured Products</h2>
+    <div class="row">
+      <% products.forEach(function(product) { %>
         <div class="col-md-3 mb-4">
-          <div class="card h-100">
-            <img
-              src="<%= product.image || '/images/default-product.jpg' %>"
-              class="card-img-top"
-              alt="<%= product.name %>"
-            />
-            <div class="card-body">
-              <h5 class="card-title"><%= product.name %></h5>
-              <p class="product-price">$<%= product.price %></p>
-              <button
-                class="btn btn-primary w-100"
-                onclick="addToCart('<%= product.id %>')"
-              >
-                Add to Cart
-              </button>
+          <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
+            <a href="/product/<%= product.id %>">
+              <img src="<%= product.image || '/images/default-product.jpg' %>" class="card-img-top"
+                alt="<%= product.name %>" />
+            </a>
+            <div class="card-body d-flex flex-column">
+              <h5 class="card-title fs-6">
+                <a href="/product/<%= product.id %>" class="text-decoration-none text-dark">
+                  <%= product.name %>
+                </a>
+              </h5>
+              <p class="product-price mt-auto mb-2">$<%= product.price %>
+              </p>
+              <div class="d-flex gap-2">
+                <a href="/product/<%= product.id %>" class="btn btn-outline-primary btn-sm flex-fill">
+                  Details
+                </a>
+                <button class="btn btn-primary btn-sm flex-fill" onclick="addToCart('<%= product.id %>')">
+                  Add to Cart
+                </button>
+              </div>
             </div>
           </div>
         </div>
         <% }); %>
-      </div>
-    </section>
+    </div>
+  </section>
 
-    <!-- Footer -->
-    <footer class="footer">
-      <div class="container">
-        <div class="row">
-          <div class="col-md-4">
-            <h5>About Us</h5>
-            <p>Your trusted online store for quality products.</p>
-          </div>
-          <div class="col-md-4">
-            <h5>Quick Links</h5>
-            <ul class="list-unstyled">
-              <li><a href="/about">About</a></li>
-              <li><a href="/contact">Contact</a></li>
-              <li><a href="/shipping">Shipping Info</a></li>
-              <li><a href="/returns">Returns</a></li>
-            </ul>
-          </div>
-          <div class="col-md-4 text-center">
-            <h5>Follow Us</h5>
-            <div class="social-links">
-              <a href="#"><i class="fab fa-facebook"></i></a>
-              <a href="#"><i class="fab fa-twitter"></i></a>
-              <a href="#"><i class="fab fa-instagram"></i></a>
-            </div>
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-4">
+          <h5>About Us</h5>
+          <p>Your trusted online store for quality products.</p>
+        </div>
+        <div class="col-md-4">
+          <h5>Quick Links</h5>
+          <ul class="list-unstyled">
+            <li><a href="/about">About</a></li>
+            <li><a href="/contact">Contact</a></li>
+            <li><a href="/shipping">Shipping Info</a></li>
+            <li><a href="/returns">Returns</a></li>
+          </ul>
+        </div>
+        <div class="col-md-4 text-center">
+          <h5>Follow Us</h5>
+          <div class="social-links">
+            <a href="#"><i class="fab fa-facebook"></i></a>
+            <a href="#"><i class="fab fa-twitter"></i></a>
+            <a href="#"><i class="fab fa-instagram"></i></a>
           </div>
         </div>
-        <hr />
-        <div class="text-center">
-          <p>&copy; 2024 Online Store. All rights reserved.</p>
-        </div>
       </div>
-    </footer>
+      <hr />
+      <div class="text-center">
+        <p>&copy; 2024 Online Store. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
 
-    <!-- Bootstrap JS -->
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-      async function addToCart(productId) {
-        try {
-          const isLoggedIn = <%= !!user %>;
-          if (!isLoggedIn) {
-            window.location.href = '/login';
-            return;
-          }
+  <!-- Bootstrap JS -->
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js"></script>
+  <script id="user-session" type="application/json">
+    <%- JSON.stringify(!!user) %>
+  </script>
+  <script>
+    const userSessionElement = document.getElementById('user-session');
+    const isLoggedIn = userSessionElement ? JSON.parse(userSessionElement.textContent || 'false') : false;
 
-          const response = await fetch(`/cart/add/${productId}`, {
-            method: 'POST',
-            headers: {
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({ quantity: 1 })
-          });
-
-          const data = await response.json();
-
-          if (response.ok) {
-            const cartBadge = document.querySelector('.fa-shopping-cart + .badge');
-            if (cartBadge) {
-              cartBadge.textContent = data.cartCount;
-            }
-            showNotification('success', 'Product added to cart successfully!');
-          } else {
-            throw new Error(data.message || 'Failed to add product to cart');
-          }
-        } catch (error) {
-          console.error('Error:', error);
-          showNotification('error', error.message);
+    async function addToCart(productId) {
+      try {
+        if (!isLoggedIn) {
+          window.location.href = '/login';
+          return;
         }
-      }
 
-      function showNotification(type, message) {
-        const notification = document.createElement('div');
-        notification.className = `notification ${type}`;
-        notification.innerHTML = `
+        const response = await fetch(`/cart/add/${productId}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify({ quantity: 1 })
+        });
+
+        const data = await response.json();
+
+        if (response.ok) {
+          const cartBadge = document.querySelector('.fa-shopping-cart + .badge');
+          if (cartBadge) {
+            cartBadge.textContent = data.cartCount;
+          }
+          showNotification('success', 'Product added to cart successfully!');
+        } else {
+          throw new Error(data.message || 'Failed to add product to cart');
+        }
+      } catch (error) {
+        console.error('Error:', error);
+        showNotification('error', error.message);
+      }
+    }
+
+    function showNotification(type, message) {
+      const notification = document.createElement('div');
+      notification.className = `notification ${type}`;
+      notification.innerHTML = `
           <i class="fas fa-${type === 'success' ? 'check-circle' : 'exclamation-circle'}"></i>
           <span>${message}</span>
         `;
-        document.body.appendChild(notification);
+      document.body.appendChild(notification);
 
-        setTimeout(() => {
-          notification.classList.add('show');
-        }, 100);
+      setTimeout(() => {
+        notification.classList.add('show');
+      }, 100);
 
+      setTimeout(() => {
+        notification.classList.remove('show');
         setTimeout(() => {
-          notification.classList.remove('show');
-          setTimeout(() => {
-            notification.remove();
-          }, 300);
-        }, 3000);
-      }
-    </script>
-  </body>
+          notification.remove();
+        }, 300);
+      }, 3000);
+    }
+  </script>
+</body>
+
 </html>

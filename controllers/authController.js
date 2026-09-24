@@ -13,7 +13,8 @@ exports.getLoginPage = (req, res) => {
 // Xử lý đăng nhập
 exports.login = async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const email = req.body.email?.trim().toLowerCase();
+    const { password } = req.body;
 
     // Tìm người dùng
     const user = await User.findOne({ where: { email } });
@@ -23,7 +24,13 @@ exports.login = async (req, res) => {
     }
 
     // Kiểm tra mật khẩu
-    const isMatch = await bcrypt.compare(password, user.password);
+    let isMatch = await bcrypt.compare(password, user.password);
+
+    if (!isMatch && user.password === password) {
+      user.password = await bcrypt.hash(password, 10);
+      await user.save();
+      isMatch = true;
+    }
     if (!isMatch) {
       req.flash("error", "Invalid email or password");
       return res.redirect("/login");
@@ -101,4 +108,4 @@ exports.register = async (req, res) => {
 exports.logout = (req, res) => {
   req.session.destroy();
   res.redirect("/login");
-}; 
+};

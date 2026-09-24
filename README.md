@@ -1,74 +1,105 @@
-# E-Commerce Website
-
+E-Commerce Website
 A simple, full-featured e-commerce web application built with Node.js, Express, EJS and MySQL. It includes product management, shopping cart, checkout, user authentication, order management, and an admin dashboard.
 
----
+# E-Commerce Website
 
-## 📁 Project Structure
+A server-rendered e-commerce application built with Node.js, Express, EJS,
+Sequelize, and MySQL. The application provides product browsing, authentication,
+shopping cart and checkout flows, order history, and an admin dashboard.
 
-- `app.js` - Application entry point
-- `config/` - Configuration and database setup
-- `controllers/` - Route controllers
-- `models/` - Sequelize models
-- `migrations/` - Database migrations
-- `seeders/` - Seed data
-- `routes/` - Express route definitions
-- `views/` - EJS templates
-- `public/` - Static assets and uploads
+## Features
 
-## 🚀 Features
+- User registration and login
+- Product and category management for administrators
+- Shopping cart and checkout
+- Order history and order details
+- Product image uploads in `public/uploads/products`
+- Admin management for products, categories, inventory, and orders
+- Automatic database schema synchronization and starter data on startup
 
-- User registration and login (authentication)
-- Product listing, create/edit/delete (admin)
-- Shopping cart and checkout flow
-- Order history and order detail pages
-- File uploads for product images (stored in `public/uploads/products`)
-- Admin dashboard for managing products, categories and orders
-- Sequelize migrations & seeders for database setup
+## Tech Stack
 
-## 🧰 Tech Stack
+- Node.js and Express
+- EJS templates
+- MySQL with Sequelize
+- Bootstrap 5
+- Multer for image uploads
 
-- Node.js
-- Express.js
-- EJS (templating)
-- MySQL (database)
-- Sequelize (ORM)
+## Prerequisites
 
-## ⚙️ Getting Started
+- Node.js 18 or newer
+- MySQL running locally or on a reachable server
+- A MySQL database created for the application
 
-1. Clone the repository:
+## Setup
+
+1. Clone the repository and install dependencies:
 
    ```bash
    git clone <repo-url>
    cd E_Commerce
-   ```
-
-2. Install dependencies:
-
-   ```bash
    npm install
    ```
 
-3. Configure the database connection in `config/config.json` (or set environment variables as needed).
+2. Create a `.env` file in the project root:
 
-4. Run migrations and seeders (requires Sequelize CLI):
-
-   ```bash
-   npx sequelize db:migrate
-   npx sequelize db:seed:all
+   ```dotenv
+   PORT=3000
+   SESSION_SECRET=replace-with-a-long-random-value
+   DB_NAME=warehouses_db
+   DB_USER=root
+   DB_PASS=root
+   DB_HOST=127.0.0.1
+   DB_DIALECT=mysql
+   DB_PORT=3307
    ```
 
-5. Start the application:
+   Change the database values to match your MySQL installation. The application
+   reads these variables from `.env` when it starts.
+
+3. Start the development server:
 
    ```bash
-   npm start
+   npm run dev
    ```
 
-6. Open your browser at `http://localhost:3000` (or the port defined in your environment).
+   Open [http://localhost:3000](http://localhost:3000), or the URL using the
+   port configured in `PORT`.
 
-## 🔒 Environment Variables
+On startup, the application synchronizes the Sequelize models and creates the
+default accounts and starter products/categories when they do not already exist.
+You do not need to run Sequelize CLI migrations or seeders for the normal local
+setup.
 
-Recommended variables (set in your environment or a .env file):
+## Default Accounts
 
-- `PORT` - Server port (default: 3000)
-- `DB_USERNAME`, `DB_PASSWORD`, `DB_NAME`, `DB_HOST` - MySQL connection details
+The startup seeder creates these accounts if they do not exist:
+
+| Role  | Email               | Password   |
+| ----- | ------------------- | ---------- |
+| Admin | `admin@example.com` | `admin123` |
+| User  | `user@example.com`  | `user123`  |
+
+Change or remove these credentials before deploying outside a local development
+environment.
+
+## Project Structure
+
+```text
+app.js                 Application entry point
+config/                Database configuration
+controllers/           Request handlers
+models/                Sequelize models
+routes/                Express route definitions
+seeders/               Startup seed data
+views/                 EJS templates
+public/                Static assets and uploaded product images
+```
+
+## Available Commands
+
+```bash
+npm run dev             Start the server with Nodemon
+```
+
+The project currently does not define an `npm start` script.

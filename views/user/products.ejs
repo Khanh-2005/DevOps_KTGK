@@ -1,0 +1,215 @@
+<%- include('./partials/header') %>
+
+    <div class="container my-4">
+        <!-- Breadcrumb -->
+        <nav aria-label="breadcrumb" class="mb-4">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="/" class="text-decoration-none">Home</a></li>
+                <li class="breadcrumb-item <%= !currentCategory ? 'active' : '' %>">
+                    <% if (currentCategory) { %>
+                        <a href="/products" class="text-decoration-none">Products</a>
+                        <% } else { %>
+                            Products
+                            <% } %>
+                </li>
+                <% if (currentCategory) { %>
+                    <li class="breadcrumb-item active" aria-current="page">
+                        <%= currentCategory.name %>
+                    </li>
+                    <% } %>
+            </ol>
+        </nav>
+
+        <!-- Header & Category Title -->
+        <div class="row align-items-center mb-4">
+            <div class="col-md-6">
+                <h2 class="fw-bold mb-1">
+                    <%= currentCategory ? currentCategory.name : 'All Products' %>
+                </h2>
+                <p class="text-muted mb-0">Showing <%= products.length %> items</p>
+            </div>
+            <!-- Search & Sort Controls -->
+            <div class="col-md-6 mt-3 mt-md-0">
+                <form method="GET" class="d-flex gap-2 justify-content-md-end">
+                    <% if (currentCategory) { %>
+                        <input type="hidden" name="category" value="<%= currentCategory.id %>" />
+                        <% } %>
+                            <div class="input-group" style="max-width: 250px;">
+                                <input type="search" name="search" class="form-control"
+                                    placeholder="Search in products..." value="<%= search || '' %>" />
+                                <button class="btn btn-outline-primary" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                            <select name="sort" class="form-select" style="max-width: 180px;"
+                                onchange="this.form.submit()">
+                                <option value="" <%=!sort ? 'selected' : '' %>>Default Sorting</option>
+                                <option value="price_asc" <%=sort==='price_asc' ? 'selected' : '' %>>Price: Low to High
+                                </option>
+                                <option value="price_desc" <%=sort==='price_desc' ? 'selected' : '' %>>Price: High to
+                                    Low</option>
+                            </select>
+                </form>
+            </div>
+        </div>
+
+        <div class="row">
+            <!-- Category Sidebar Filter -->
+            <div class="col-lg-3 mb-4">
+                <div class="card shadow-sm border-0 rounded-3">
+                    <div class="card-header bg-white border-bottom py-3">
+                        <h5 class="mb-0 fw-semibold text-primary">
+                            <i class="fas fa-th-large me-2"></i>Categories
+                        </h5>
+                    </div>
+                    <div class="list-group list-group-flush">
+                        <a href="/products"
+                            class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <%= !currentCategory ? 'active bg-primary text-white' : '' %>">
+                            <span>All Categories</span>
+                            <i class="fas fa-chevron-right small"></i>
+                        </a>
+                        <% categories.forEach(function(cat) { %>
+                            <a href="/category/<%= cat.id %>"
+                                class="list-group-item list-group-item-action d-flex justify-content-between align-items-center <%= (currentCategory && currentCategory.id === cat.id) ? 'active bg-primary text-white' : '' %>">
+                                <span>
+                                    <%= cat.name %>
+                                </span>
+                                <i class="fas fa-chevron-right small"></i>
+                            </a>
+                            <% }); %>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Product Grid -->
+            <div class="col-lg-9">
+                <% if (products && products.length> 0) { %>
+                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-4">
+                        <% products.forEach(function(product) { %>
+                            <div class="col">
+                                <div class="card h-100 shadow-sm product-card border-0 rounded-3 overflow-hidden">
+                                    <!-- Product Image -->
+                                    <a href="/product/<%= product.id %>"
+                                        class="overflow-hidden position-relative product-img-wrapper">
+                                        <img src="<%= product.image || '/images/default-product.jpg' %>"
+                                            class="card-img-top product-img" alt="<%= product.name %>" />
+                                        <% if (product.stock> 0) { %>
+                                            <span class="badge bg-success position-absolute top-0 start-0 m-2">In
+                                                Stock</span>
+                                            <% } else { %>
+                                                <span class="badge bg-danger position-absolute top-0 start-0 m-2">Out of
+                                                    Stock</span>
+                                                <% } %>
+                                    </a>
+
+                                    <!-- Product Body -->
+                                    <div class="card-body d-flex flex-column p-3">
+                                        <div class="small text-muted mb-1">
+                                            <%= product.category ? product.category.name : 'Category' %>
+                                        </div>
+                                        <h6 class="card-title fw-bold mb-2">
+                                            <a href="/product/<%= product.id %>"
+                                                class="text-decoration-none text-dark product-title-link">
+                                                <%= product.name %>
+                                            </a>
+                                        </h6>
+
+                                        <p class="card-text text-muted small text-truncate-2 mb-3">
+                                            <%= product.description %>
+                                        </p>
+
+                                        <div class="mt-auto">
+                                            <div class="d-flex justify-content-between align-items-baseline mb-2">
+                                                <span class="fs-5 fw-bold text-primary">$<%= product.price %></span>
+                                                <% if (product.origin) { %>
+                                                    <span class="small text-muted"><i
+                                                            class="fas fa-globe-americas me-1"></i>
+                                                        <%= product.origin %>
+                                                    </span>
+                                                    <% } %>
+                                            </div>
+
+                                            <div class="d-flex gap-2">
+                                                <a href="/product/<%= product.id %>"
+                                                    class="btn btn-outline-primary btn-sm flex-fill">
+                                                    <i class="fas fa-eye me-1"></i> Details
+                                                </a>
+                                                <button class="btn btn-primary btn-sm flex-fill"
+                                                    onclick="addToCart('<%= product.id %>')" <%=product.stock <=0
+                                                    ? 'disabled' : '' %>
+                                                    >
+                                                    <i class="fas fa-cart-plus me-1"></i> Add
+                                                </button>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <% }); %>
+                    </div>
+                    <% } else { %>
+                        <!-- No Products Found -->
+                        <div class="card border-0 shadow-sm p-5 text-center">
+                            <div class="my-4">
+                                <i class="fas fa-search fa-4x text-muted mb-3"></i>
+                                <h4>No products found</h4>
+                                <p class="text-muted">
+                                    We couldn't find any products matching your criteria.
+                                </p>
+                                <a href="/products" class="btn btn-primary mt-2">
+                                    Browse All Products
+                                </a>
+                            </div>
+                        </div>
+                        <% } %>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        .product-card {
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+        }
+
+        .product-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1) !important;
+        }
+
+        .product-img-wrapper {
+            height: 200px;
+            background-color: #f8f9fa;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .product-img {
+            height: 100%;
+            width: 100%;
+            object-fit: cover;
+            transition: transform 0.3s ease;
+        }
+
+        .product-card:hover .product-img {
+            transform: scale(1.05);
+        }
+
+        .product-title-link:hover {
+            color: #4e73df !important;
+        }
+
+        .text-truncate-2 {
+            display: -webkit-box;
+            line-clamp: 2;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+
+        .breadcrumb-item a {
+            color: #4e73df;
+        }
+    </style>
+
+    <%- include('./partials/footer') %>

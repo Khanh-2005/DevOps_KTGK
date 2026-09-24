@@ -106,9 +106,9 @@ exports.getProducts = async (req, res) => {
     if (search) {
       whereClause = {
         [Op.or]: [
-          { name: { [Op.iLike]: `%${search}%` } },
-          { description: { [Op.iLike]: `%${search}%` } },
-          { "$category.name$": { [Op.iLike]: `%${search}%` } },
+          { name: { [Op.like]: `%${search}%` } },
+          { description: { [Op.like]: `%${search}%` } },
+          { "$category.name$": { [Op.like]: `%${search}%` } },
         ],
       };
     }
@@ -152,4 +152,4 @@ exports.getInventory = async (req, res) => {
     console.error(error);
     res.status(500).send("Server Error");
   }
-}; 
+};
