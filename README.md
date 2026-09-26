@@ -66,6 +66,13 @@ shopping cart and checkout flows, order history, and an admin dashboard.
    Open [http://localhost:3000](http://localhost:3000), or the URL using the
    port configured in `PORT`.
 
+## API Documentation
+
+Open `/api-docs` on the running server to browse and try the documented JSON
+endpoints. The cart and order endpoints require an authenticated session; sign
+in to the application first and use the same browser session when making
+requests from Swagger UI.
+
 On startup, the application synchronizes the Sequelize models and creates the
 default accounts and starter products/categories when they do not already exist.
 You do not need to run Sequelize CLI migrations or seeders for the normal local

@@ -3,6 +3,9 @@ const router = express.Router();
 const orderController = require("../controllers/orderController");
 const isAuth = require("../middleware/isAuth");
 
+// Danh sách đơn hàng của user
+router.get("/", isAuth, orderController.getUserOrderList);
+
 // Tạo đơn hàng mới
 router.post("/create", isAuth, orderController.createOrder);
 

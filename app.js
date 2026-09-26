@@ -1,5 +1,6 @@
 require("dotenv").config();
 const express = require("express");
+const swaggerUi = require("swagger-ui-express");
 const session = require("express-session");
 const path = require("path");
 const sequelize = require("./config/database");
@@ -9,6 +10,7 @@ const bcrypt = require("bcryptjs");
 const flash = require("connect-flash");
 const createDefaultAccounts = require("./seeders/createDefaultAccounts");
 const seedProductsAndCategories = require("./seeders/seedProductsAndCategories");
+const openApiSpec = require("./config/openapi");
 
 const app = express();
 
@@ -42,6 +44,7 @@ app.use(
 // Method override và flash messages
 app.use(methodOverride("_method"));
 app.use(flash());
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(openApiSpec));
 
 // Routes
 const adminRoutes = require("./routes/admin");

@@ -66,6 +66,26 @@ exports.createOrder = async (req, res) => {
   }
 };
 
+// Danh sách đơn hàng của user đang đăng nhập
+exports.getUserOrderList = async (req, res) => {
+  try {
+    const orders = await Order.findAll({
+      where: { userId: req.session.user.id },
+      include: [{ model: OrderItem, as: "items", attributes: ["id"] }],
+      order: [["createdAt", "DESC"]],
+    });
+
+    res.render("user/orders", {
+      orders,
+      user: req.session.user,
+      moment,
+    });
+  } catch (error) {
+    console.error("Error fetching user orders:", error);
+    res.status(500).send("Server Error");
+  }
+};
+
 // Xem chi tiết đơn hàng (cho user)
 exports.getOrderDetail = async (req, res) => {
   try {
