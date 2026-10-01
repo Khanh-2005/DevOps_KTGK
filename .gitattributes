@@ -1,4 +1,3 @@
-# Các file này chạy trên Linux (Jenkins/VPS) nên bắt buộc dùng line ending LF
-Jenkinsfile text eol=lf
+# Keep deployment configuration files compatible with Linux runners.
 Dockerfile text eol=lf
 *.yml text eol=lf

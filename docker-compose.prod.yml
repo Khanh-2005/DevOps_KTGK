@@ -1,6 +1,6 @@
-# Chạy trên VPS. File này được Jenkins copy sang server thành ~/ecommerce/docker-compose.yml
-# Biến ${...} được đọc từ file .env nằm cạnh file này (do Jenkins đẩy lên)
-# và từ biến môi trường DOCKERHUB_USER, IMAGE_TAG (do Jenkinsfile truyền vào).
+# Optional Docker Compose deployment for a self-hosted VPS.
+# Vercel does not use this file; configure the app and database in Vercel instead.
+# For Docker deployments, provide a .env file and set DOCKERHUB_USER and IMAGE_TAG.
 
 services:
   db:
@@ -13,9 +13,13 @@ services:
       MYSQL_USER: ${DB_USER}
       MYSQL_PASSWORD: ${DB_PASS}
     volumes:
-      - db_data:/var/lib/mysql          # dữ liệu DB nằm ngoài container -> deploy không mất data
+      - db_data:/var/lib/mysql # dữ liệu DB nằm ngoài container -> deploy không mất data
     healthcheck:
-      test: ["CMD-SHELL", "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent"]
+      test:
+        [
+          "CMD-SHELL",
+          "mysqladmin ping -h 127.0.0.1 -uroot -p$$MYSQL_ROOT_PASSWORD --silent",
+        ]
       interval: 10s
       timeout: 5s
       retries: 12
@@ -28,21 +32,21 @@ services:
     restart: unless-stopped
     depends_on:
       db:
-        condition: service_healthy      # đợi MySQL sẵn sàng rồi mới chạy app
+        condition: service_healthy # đợi MySQL sẵn sàng rồi mới chạy app
     environment:
       NODE_ENV: production
       PORT: 3000
-      DB_HOST: db                       # tên service = hostname trong network của compose
-      DB_PORT: 3306
+      DB_HOST: db # tên service = hostname trong network của compose
+      DB_PORT: 3307
       DB_DIALECT: mysql
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
       DB_PASS: ${DB_PASS}
       SESSION_SECRET: ${SESSION_SECRET}
     ports:
-      - "80:3000"                       # host(VPS):container
+      - "80:3000" # host(VPS):container
     volumes:
-      - uploads:/app/public/uploads/products   # ảnh admin upload không mất khi deploy
+      - uploads:/app/public/uploads/products # ảnh admin upload không mất khi deploy
 
 volumes:
   db_data:

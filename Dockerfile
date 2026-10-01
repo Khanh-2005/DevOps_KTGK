@@ -1,3 +1,5 @@
+# Optional Docker image for self-hosted deployments.
+# Vercel does not use this Dockerfile; production deploys run via GitHub Actions.
 # ===== E-Commerce (Node.js + Express + EJS + Sequelize) =====
 FROM node:24-alpine
 
