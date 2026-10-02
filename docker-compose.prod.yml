@@ -37,7 +37,7 @@ services:
       NODE_ENV: production
       PORT: 3000
       DB_HOST: db # tên service = hostname trong network của compose
-      DB_PORT: 3307
+      DB_PORT: 3306 # MySQL listens on 3306 inside the Compose network
       DB_DIALECT: mysql
       DB_NAME: ${DB_NAME}
       DB_USER: ${DB_USER}
