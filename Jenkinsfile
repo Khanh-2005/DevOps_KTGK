@@ -60,6 +60,7 @@ pipeline {
     post {
         success {
             echo 'Jenkins pipeline completed successfully.'
+            echo 'Your public link: https://ecommerce-app-ebon-omega.vercel.app/'
         }
         failure {
             echo 'Jenkins pipeline failed. Review the stage logs before retrying.'
