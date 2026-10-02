@@ -1,6 +1,10 @@
 pipeline {
     agent any
 
+    tools {
+        nodejs 'NodeJS-22'
+    }
+
     options {
         timestamps()
         disableConcurrentBuilds()
@@ -12,12 +16,6 @@ pipeline {
     }
 
     stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
-            }
-        }
-
         stage('Install and validate') {
             steps {
                 sh '''
