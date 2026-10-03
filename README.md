@@ -73,6 +73,8 @@ Auth, Cart, Orders, Profile, and User routers. Swagger lists each route's HTTP
 method and indicates whether it returns JSON, renders an HTML page, or redirects.
 Protected routes require an authenticated session; sign in to the application
 first and use the same browser session when making requests from Swagger UI.
+Vercel builds copy the Swagger UI static assets into `public/api-docs` so the
+documentation interface and its styles/scripts are served correctly.
 
 On startup, the application synchronizes the Sequelize models and creates the
 default accounts and starter products/categories when they do not already exist.
