@@ -1,6 +1,6 @@
 <%- include('./partials/header') %>
 
-  <div class="container mt-4">
+  <div class="container-fluid mt-4">
     <% if (typeof error !=='undefined' && error) { %>
       <div class="alert alert-danger" role="alert">
         <%= error %>
@@ -14,6 +14,34 @@
           </button>
         </div>
 
+        <!-- Product Summary Cards -->
+        <div class="row mb-5" id="categorySummaryCards">
+          <% categories.slice(0, 4).forEach(function(category, index) { const tones=['primary', 'success' , 'warning' , 'danger' ];
+            const tone=tones[index % tones.length]; const categoryProductCount=products.filter(product=>
+            product.category && Number(product.category.id) === Number(category.id)
+            ).length;
+            %>
+            <div class="col-xl-3 col-md-6 mb-4">
+              <button type="button" class="card summary-card border-left-<%= tone %> shadow h-100 py-2 w-100"
+                data-category-filter="<%= category.id %>" aria-pressed="false">
+                <div class="card-body py-2">
+                  <div class="d-flex justify-content-between align-items-center">
+                    <div class="me-2">
+                      <div class="text-xs font-weight-bold text-<%= tone %> text-uppercase mb-1">
+                        <%= category.name %>
+                      </div>
+                      <div class="h5 mb-0 font-weight-bold text-gray-800">
+                        <%= categoryProductCount %>
+                      </div>
+                    </div>
+                    <i class="bi bi-tag fa-2x text-gray-300"></i>
+                  </div>
+                </div>
+              </button>
+            </div>
+            <% }); %>
+        </div>
+
         <!-- Thêm phần tìm kiếm vào trước bảng sản phẩm -->
         <div class="card shadow mb-4">
           <div class="card-header py-3 d-flex justify-content-between align-items-center">
@@ -21,61 +49,9 @@
             <div class="d-flex gap-2">
               <!-- Search Box -->
               <div class="search-box" style="min-width: 300px">
-                <!-- <div class="input-group">
-            <input
-              type="text"
-              class="form-control"
-              id="searchInput"
-              placeholder="Search by name, description, category..."
-              onkeyup="debounceSearch(this.value)"
-            />
-
-            <ul class="dropdown-menu dropdown-menu-end">
-              <li><h6 class="dropdown-header">Search in:</h6></li>
-              <li>
-                <label class="dropdown-item">
-                  <input
-                    type="checkbox"
-                    checked
-                    class="search-filter"
-                    value="name"
-                  />
-                  Name
-                </label>
-              </li>
-              <li>
-                <label class="dropdown-item">
-                  <input
-                    type="checkbox"
-                    checked
-                    class="search-filter"
-                    value="description"
-                  />
-                  Description
-                </label>
-              </li>
-              <li>
-                <label class="dropdown-item">
-                  <input
-                    type="checkbox"
-                    checked
-                    class="search-filter"
-                    value="category"
-                  />
-                  Category
-                </label>
-              </li>
-              <li><hr class="dropdown-divider" /></li>
-              <li>
-                <label class="dropdown-item">
-                  <input type="checkbox" id="exactMatch" /> Exact match
-                </label>
-              </li>
-            </ul>
-          </div> -->
                 <div class="position-relative">
                   <input type="text" class="form-control rounded-pill shadow-sm ps-3 pe-5" id="searchInput"
-                    placeholder="Tìm kiếm theo tên, mô tả, danh mục..." onkeyup="debounceSearch(this.value)" />
+                    placeholder="Search by name, description, category..." onkeyup="debounceSearch(this.value)" />
                   <i class="bi bi-search position-absolute top-50 end-0 translate-middle-y me-3 text-muted"></i>
                 </div>
 
@@ -86,7 +62,7 @@
           </div>
 
           <!-- Products Table -->
-          <div class="card-body">
+          <div class="card-body" style="width: 100%; overflow-x: auto;">
             <div class="table-responsive">
               <table class="table table-bordered" id="productsTable">
                 <thead>
@@ -117,6 +93,7 @@
           </div>
         </div>
   </div>
+
 
   <!-- Add Product Modal -->
   <div class="modal fade" id="addProductModal" tabindex="-1">
@@ -626,6 +603,7 @@
     const productsDataElement = document.getElementById('products-data');
     const products = productsDataElement ? JSON.parse(productsDataElement.textContent || '[]') : [];
     let fuse;
+    let selectedCategoryId = null;
 
     // Khởi tạo Fuse.js khi trang được load
     fuseScript.onload = function () {
@@ -637,6 +615,7 @@
         minMatchCharLength: 2
       };
       fuse = new Fuse(products, options);
+      performSearch(document.getElementById('searchInput').value);
     };
 
     function debounceSearch(value) {
@@ -645,16 +624,20 @@
     }
 
     function performSearch(searchTerm) {
-      if (!searchTerm) {
-        updateProductsTable(products);
-        return;
-      }
-
-      // Thực hiện tìm kiếm gần đúng với Fuse.js
-      const results = fuse.search(searchTerm);
-
-      // Chuyển đổi kết quả tìm kiếm về định dạng sản phẩm
-      const filteredProducts = results.map(result => result.item);
+      const term = searchTerm.trim();
+      const matchingProducts = term
+        ? (fuse
+          ? fuse.search(term).map(result => result.item)
+          : products.filter(product =>
+            [product.name, product.description, product.category && product.category.name]
+              .some(value => value && value.toLowerCase().includes(term.toLowerCase()))
+          ))
+        : products;
+      const filteredProducts = selectedCategoryId
+        ? matchingProducts.filter(product =>
+          product.category && String(product.category.id) === selectedCategoryId
+        )
+        : matchingProducts;
 
       updateProductsTable(filteredProducts);
     }
@@ -712,6 +695,19 @@
       // Initial table load
       updateProductsTable(products);
 
+      document.querySelectorAll('[data-category-filter]').forEach(card => {
+        card.addEventListener('click', () => {
+          const categoryId = card.dataset.categoryFilter;
+          selectedCategoryId = selectedCategoryId === categoryId ? null : categoryId;
+          document.querySelectorAll('[data-category-filter]').forEach(categoryCard => {
+            const isSelected = categoryCard.dataset.categoryFilter === selectedCategoryId;
+            categoryCard.classList.toggle('selected', isSelected);
+            categoryCard.setAttribute('aria-pressed', String(isSelected));
+          });
+          performSearch(document.getElementById('searchInput').value);
+        });
+      });
+
       // Add event listeners to filters
       document.querySelectorAll('.search-filter, #exactMatch').forEach(filter => {
         filter.addEventListener('change', () => {
@@ -722,6 +718,47 @@
   </script>
 
   <style>
+    .border-left-primary {
+      border-left: 4px solid #4e73df;
+    }
+
+    .border-left-warning {
+      border-left: 4px solid #f6c23e;
+    }
+
+    .border-left-danger {
+      border-left: 4px solid #e74a3b;
+    }
+
+    .border-left-success {
+      border-left: 4px solid #1cc88a;
+    }
+
+    .summary-card {
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .summary-card.border-left-primary {
+      border-left: 4px solid #4e73df !important;
+    }
+
+    .summary-card.border-left-success {
+      border-left: 4px solid #1cc88a !important;
+    }
+
+    .summary-card.border-left-warning {
+      border-left: 4px solid #f6c23e !important;
+    }
+
+    .summary-card.border-left-danger {
+      border-left: 4px solid #e74a3b !important;
+    }
+
+    .summary-card.selected {
+      box-shadow: 0 0 0 2px rgba(78, 115, 223, 0.25), 0 0 10px rgba(0, 0, 0, 0.1) !important;
+    }
+
     .modal-lg {
       max-width: 1000px;
     }

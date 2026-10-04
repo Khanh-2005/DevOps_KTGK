@@ -1,179 +1,166 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Online Store</title>
-    <!-- Bootstrap CSS -->
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <!-- Font Awesome -->
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css"
-      rel="stylesheet"
-    />
-    <link
-      rel="stylesheet"
-      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css"
-    />
-    <style>
-      .navbar-brand {
-        font-size: 1.5rem;
-        font-weight: bold;
-        color: #4e73df !important;
-      }
-    </style>
-  </head>
-  <body>
-    <!-- Navbar -->
-    <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
-      <div class="container">
-        <a class="navbar-brand" href="/">
-          <i class="fas fa-store me-2"></i>Online Store
-        </a>
-        <button
-          class="navbar-toggler"
-          type="button"
-          data-bs-toggle="collapse"
-          data-bs-target="#navbarNav"
-        >
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link position-relative" href="/cart">
-                <i class="fas fa-shopping-cart cart-icon"></i>
-                <span
-                  class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge"
-                >
-                  <%= (user && user.cart) ? user.cart.length : 0 %>
-                </span>
-              </a>
-            </li>
-            <% if (user) { %>
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Online Store</title>
+  <!-- Bootstrap CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+  <!-- Font Awesome -->
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.7.2/font/bootstrap-icons.css" />
+  <style>
+    .navbar-brand {
+      font-size: 1.5rem;
+      font-weight: bold;
+      color: #4e73df !important;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Navbar -->
+  <nav class="navbar navbar-expand-lg navbar-light bg-white shadow-sm">
+    <div class="container">
+      <a class="navbar-brand" href="/">
+        <i class="fas fa-store me-2"></i>Khanh Store
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarNav">
+        <ul class="navbar-nav ms-auto">
+          <li class="nav-item">
+            <a class="nav-link position-relative" href="/cart">
+              <i class="fas fa-shopping-cart cart-icon"></i>
+              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
+                <%= (user && user.cart) ? user.cart.length : 0 %>
+              </span>
+            </a>
+          </li>
+          <% if (user) { %>
             <li class="nav-item dropdown">
-              <a
-                class="nav-link dropdown-toggle"
-                href="#"
-                data-bs-toggle="dropdown"
-              >
-                <i class="fas fa-user me-2"></i><%= user.name %>
+              <a class="nav-link dropdown-toggle" href="#" data-bs-toggle="dropdown">
+                <i class="fas fa-user me-2"></i>
+                <%= user.name %>
               </a>
               <ul class="dropdown-menu">
                 <li><a class="dropdown-item" href="/profile">Profile</a></li>
                 <li><a class="dropdown-item" href="/orders">My Orders</a></li>
-                <li><hr class="dropdown-divider" /></li>
+                <li>
+                  <hr class="dropdown-divider" />
+                </li>
                 <li><a class="dropdown-item" href="/logout">Logout</a></li>
               </ul>
             </li>
             <% } else { %>
-            <li class="nav-item">
-              <a class="nav-link" href="/login">Login</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="/register">Register</a>
-            </li>
-            <% } %>
-          </ul>
-        </div>
+              <li class="nav-item">
+                <a class="nav-link" href="/login">Login</a>
+              </li>
+              <li class="nav-item">
+                <a class="nav-link" href="/register">Register</a>
+              </li>
+              <% } %>
+        </ul>
       </div>
-    </nav>
+    </div>
+  </nav>
 
-    <script>
-      async function addToCart(productId) {
-        try {
-          const response = await fetch(`/cart/add/${productId}`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({ quantity: 1 }),
-          });
+  <script>
+    async function addToCart(productId) {
+      try {
+        const response = await fetch(`/cart/add/${productId}`, {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ quantity: 1 }),
+        });
 
-          const data = await response.json();
+        const data = await response.json();
 
-          if (response.ok) {
-            // Cập nhật số lượng trong giỏ hàng
-            const cartBadge = document.querySelector(
-              ".fa-shopping-cart + .badge"
-            );
-            if (cartBadge) {
-              cartBadge.textContent = data.cartCount;
-            }
+        if (response.ok) {
+          // Cập nhật số lượng trong giỏ hàng
+          const cartBadge = document.querySelector(
+            ".fa-shopping-cart + .badge"
+          );
+          if (cartBadge) {
+            cartBadge.textContent = data.cartCount;
+          }
 
-            // Hiển thị thông báo thành công
-            const toast = document.createElement("div");
-            toast.className = "toast-notification success";
-            toast.innerHTML = `
+          // Hiển thị thông báo thành công
+          const toast = document.createElement("div");
+          toast.className = "toast-notification success";
+          toast.innerHTML = `
                     <i class="fas fa-check-circle"></i>
                     Product added to cart successfully!
                 `;
-            document.body.appendChild(toast);
-
-            // Xóa thông báo sau 3 giây
-            setTimeout(() => {
-              toast.remove();
-            }, 3000);
-          } else {
-            throw new Error(data.message);
-          }
-        } catch (error) {
-          console.error("Error:", error);
-          // Hiển thị thông báo lỗi
-          const toast = document.createElement("div");
-          toast.className = "toast-notification error";
-          toast.innerHTML = `
-                <i class="fas fa-exclamation-circle"></i>
-                ${error.message || "Failed to add product to cart"}
-            `;
           document.body.appendChild(toast);
 
+          // Xóa thông báo sau 3 giây
           setTimeout(() => {
             toast.remove();
           }, 3000);
+        } else {
+          throw new Error(data.message);
         }
-      }
-    </script>
+      } catch (error) {
+        console.error("Error:", error);
+        // Hiển thị thông báo lỗi
+        const toast = document.createElement("div");
+        toast.className = "toast-notification error";
+        toast.innerHTML = `
+                <i class="fas fa-exclamation-circle"></i>
+                ${error.message || "Failed to add product to cart"}
+            `;
+        document.body.appendChild(toast);
 
-    <style>
-      .toast-notification {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 15px 25px;
-        border-radius: 4px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        animation: slideIn 0.3s ease-in-out;
-        z-index: 1000;
+        setTimeout(() => {
+          toast.remove();
+        }, 3000);
+      }
+    }
+  </script>
+
+  <style>
+    .toast-notification {
+      position: fixed;
+      top: 20px;
+      right: 20px;
+      padding: 15px 25px;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      animation: slideIn 0.3s ease-in-out;
+      z-index: 1000;
+    }
+
+    .toast-notification.success {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .toast-notification.error {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    @keyframes slideIn {
+      from {
+        transform: translateX(100%);
+        opacity: 0;
       }
 
-      .toast-notification.success {
-        background-color: #d4edda;
-        color: #155724;
-        border: 1px solid #c3e6cb;
+      to {
+        transform: translateX(0);
+        opacity: 1;
       }
+    }
+  </style>
+</body>
 
-      .toast-notification.error {
-        background-color: #f8d7da;
-        color: #721c24;
-        border: 1px solid #f5c6cb;
-      }
-
-      @keyframes slideIn {
-        from {
-          transform: translateX(100%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
-      }
-    </style>
-  </body>
 </html>

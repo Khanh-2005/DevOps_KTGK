@@ -1,209 +1,239 @@
 <%- include('./partials/header') %>
 
-<div class="container-fluid mt-4">
-  <div class="d-flex justify-content-between align-items-center mb-4">
-    <h2>Inventory Management</h2>
-    <button
-      type="button"
-      class="btn btn-primary"
-      data-bs-toggle="modal"
-      data-bs-target="#addStockModal"
-    >
-      Add Stock
-    </button>
-  </div>
+  <div class="container-fluid mt-4">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2>Inventory Management</h2>
+      <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addStockModal">
+        Add Stock
+      </button>
+    </div>
 
-  <!-- Inventory Summary Cards -->
-  <div class="row mb-4">
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-primary shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div
-                class="text-xs font-weight-bold text-primary text-uppercase mb-1"
-              >
-                Total Items
+    <!-- Inventory Summary Cards -->
+    <div class="row mb-4">
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-primary shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">
+                  Total Items
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  <%= products.length %>
+                </div>
               </div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                <%= products.length %>
+              <div class="col-auto">
+                <i class="fas fa-boxes fa-2x text-gray-300"></i>
               </div>
             </div>
-            <div class="col-auto">
-              <i class="fas fa-boxes fa-2x text-gray-300"></i>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-success shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-success text-uppercase mb-1">
+                  In Stock Items
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  <%= products.filter(p=> p.stock >= 21).length %>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-warning shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-warning text-uppercase mb-1">
+                  Medium Stock Items
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  <%= products.filter(p=> p.stock >= 10 && p.stock <= 20).length %>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="col-xl-3 col-md-6 mb-4">
+        <div class="card border-left-danger shadow h-100 py-2">
+          <div class="card-body">
+            <div class="row no-gutters align-items-center">
+              <div class="col mr-2">
+                <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">
+                  Low Stock Items
+                </div>
+                <div class="h5 mb-0 font-weight-bold text-gray-800">
+                  <%= products.filter(p=> p.stock < 10).length %>
+                </div>
+              </div>
+              <div class="col-auto">
+                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+              </div>
             </div>
           </div>
         </div>
       </div>
     </div>
 
-    <div class="col-xl-3 col-md-6 mb-4">
-      <div class="card border-left-warning shadow h-100 py-2">
-        <div class="card-body">
-          <div class="row no-gutters align-items-center">
-            <div class="col mr-2">
-              <div
-                class="text-xs font-weight-bold text-warning text-uppercase mb-1"
-              >
-                Low Stock Items
-              </div>
-              <div class="h5 mb-0 font-weight-bold text-gray-800">
-                <%= products.filter(p => p.stock < 10).length %>
-              </div>
+    <!-- Inventory Table -->
+    <div class="card shadow mb-4">
+      <div class="card-header py-3">
+        <h6 class="m-0 font-weight-bold text-primary">Inventory Status</h6>
+      </div>
+      <div class="card-body">
+        <div class="table-responsive">
+          <table class="table table-bordered" id="inventoryTable">
+            <thead>
+              <tr>
+                <th>Product ID</th>
+                <th>Image</th>
+                <th>Product Name</th>
+                <th>Category</th>
+                <th>Current Stock</th>
+                <th>Status</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+            <tbody>
+              <% products.forEach(function(product) { %>
+                <tr>
+                  <td>
+                    <%= product.id %>
+                  </td>
+                  <td>
+                    <% if (product.image) { %>
+                      <img src="<%= product.image %>" alt="<%= product.name %>"
+                        style="width: 50px; height: 50px; object-fit: cover" />
+                      <% } else { %>
+                        <span class="text-muted">No image</span>
+                        <% } %>
+                  </td>
+                  <td>
+                    <%= product.name %>
+                  </td>
+                  <td>
+                    <%= product.category ? product.category.name : 'N/A' %>
+                  </td>
+                  <td>
+                    <%= product.stock %>
+                  </td>
+                  <td>
+                    <% if (product.stock> 20) { %>
+                      <span class="badge bg-success">In Stock</span>
+                      <% } else if (product.stock> 10) { %>
+                        <span class="badge bg-warning">Medium Stock</span>
+                        <% } else if (product.stock> 0) { %>
+                          <span class="badge bg-danger">Low Stock</span>
+                          <% } else { %>
+                            <span class="badge bg-secondary">Out of Stock</span>
+                            <% } %>
+                  </td>
+                  <td>
+                    <button class="btn btn-sm btn-primary"
+                      onclick="updateStock('<%= product.id %>', '<%= product.name %>')" data-bs-toggle="modal"
+                      data-bs-target="#updateStockModal">
+                      Update Stock
+                    </button>
+                  </td>
+                </tr>
+                <% }); %>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Add Stock Modal -->
+  <div class="modal fade" id="updateStockModal" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Update Stock</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+        </div>
+        <form id="updateStockForm" method="POST">
+          <div class="modal-body">
+            <input type="hidden" id="productId" name="productId" />
+            <div class="mb-3">
+              <label class="form-label">Product Name</label>
+              <input type="text" class="form-control" id="productName" readonly />
             </div>
-            <div class="col-auto">
-              <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+            <div class="mb-3">
+              <label class="form-label">Quantity to Add/Remove</label>
+              <input type="number" class="form-control" name="quantity" required />
+              <small class="text-muted">Use negative numbers to remove stock</small>
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Notes</label>
+              <textarea class="form-control" name="notes" rows="3"></textarea>
             </div>
           </div>
-        </div>
+          <div class="modal-footer">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">
+              Close
+            </button>
+            <button type="submit" class="btn btn-primary">Update Stock</button>
+          </div>
+        </form>
       </div>
     </div>
   </div>
 
-  <!-- Inventory Table -->
-  <div class="card shadow mb-4">
-    <div class="card-header py-3">
-      <h6 class="m-0 font-weight-bold text-primary">Inventory Status</h6>
-    </div>
-    <div class="card-body">
-      <div class="table-responsive">
-        <table class="table table-bordered" id="inventoryTable">
-          <thead>
-            <tr>
-              <th>Product ID</th>
-              <th>Image</th>
-              <th>Product Name</th>
-              <th>Category</th>
-              <th>Current Stock</th>
-              <th>Status</th>
-              <th>Actions</th>
-            </tr>
-          </thead>
-          <tbody>
-            <% products.forEach(function(product) { %>
-            <tr>
-              <td><%= product.id %></td>
-              <td>
-                <% if (product.image) { %>
-                <img
-                  src="<%= product.image %>"
-                  alt="<%= product.name %>"
-                  style="width: 50px; height: 50px; object-fit: cover"
-                />
-                <% } else { %>
-                <span class="text-muted">No image</span>
-                <% } %>
-              </td>
-              <td><%= product.name %></td>
-              <td><%= product.category ? product.category.name : 'N/A' %></td>
-              <td><%= product.stock %></td>
-              <td>
-                <% if (product.stock > 20) { %>
-                <span class="badge bg-success">In Stock</span>
-                <% } else if (product.stock > 10) { %>
-                <span class="badge bg-warning">Medium Stock</span>
-                <% } else if (product.stock > 0) { %>
-                <span class="badge bg-danger">Low Stock</span>
-                <% } else { %>
-                <span class="badge bg-secondary">Out of Stock</span>
-                <% } %>
-              </td>
-              <td>
-                <button
-                  class="btn btn-sm btn-primary"
-                  onclick="updateStock('<%= product.id %>', '<%= product.name %>')"
-                  data-bs-toggle="modal"
-                  data-bs-target="#updateStockModal"
-                >
-                  Update Stock
-                </button>
-              </td>
-            </tr>
-            <% }); %>
-          </tbody>
-        </table>
-      </div>
-    </div>
-  </div>
-</div>
+  <script>
+    function updateStock(productId, productName) {
+      document.getElementById("productId").value = productId;
+      document.getElementById("productName").value = productName;
+      document.getElementById(
+        "updateStockForm"
+      ).action = `/admin/inventory/update-stock/${productId}`;
+    }
+  </script>
 
-<!-- Add Stock Modal -->
-<div class="modal fade" id="updateStockModal" tabindex="-1">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <h5 class="modal-title">Update Stock</h5>
-        <button
-          type="button"
-          class="btn-close"
-          data-bs-dismiss="modal"
-        ></button>
-      </div>
-      <form id="updateStockForm" method="POST">
-        <div class="modal-body">
-          <input type="hidden" id="productId" name="productId" />
-          <div class="mb-3">
-            <label class="form-label">Product Name</label>
-            <input type="text" class="form-control" id="productName" readonly />
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Quantity to Add/Remove</label>
-            <input
-              type="number"
-              class="form-control"
-              name="quantity"
-              required
-            />
-            <small class="text-muted"
-              >Use negative numbers to remove stock</small
-            >
-          </div>
-          <div class="mb-3">
-            <label class="form-label">Notes</label>
-            <textarea class="form-control" name="notes" rows="3"></textarea>
-          </div>
-        </div>
-        <div class="modal-footer">
-          <button
-            type="button"
-            class="btn btn-secondary"
-            data-bs-dismiss="modal"
-          >
-            Close
-          </button>
-          <button type="submit" class="btn btn-primary">Update Stock</button>
-        </div>
-      </form>
-    </div>
-  </div>
-</div>
+  <style>
+    .border-left-primary {
+      border-left: 4px solid #4e73df;
+    }
 
-<script>
-  function updateStock(productId, productName) {
-    document.getElementById("productId").value = productId;
-    document.getElementById("productName").value = productName;
-    document.getElementById(
-      "updateStockForm"
-    ).action = `/admin/inventory/update-stock/${productId}`;
-  }
-</script>
+    .border-left-warning {
+      border-left: 4px solid #f6c23e;
+    }
 
-<style>
-  .border-left-primary {
-    border-left: 4px solid #4e73df;
-  }
-  .border-left-warning {
-    border-left: 4px solid #f6c23e;
-  }
-  .text-xs {
-    font-size: 0.7rem;
-  }
-  .text-gray-300 {
-    color: #dddfeb;
-  }
-  .text-gray-800 {
-    color: #5a5c69;
-  }
-</style>
+    .border-left-danger {
+      border-left: 4px solid #e74a3b;
+    }
 
-<%- include('./partials/footer') %>
+    .border-left-success {
+      border-left: 4px solid #1cc88a;
+    }
+
+    .text-xs {
+      font-size: 0.7rem;
+    }
+
+    .text-gray-300 {
+      color: #dddfeb;
+    }
+
+    .text-gray-800 {
+      color: #5a5c69;
+    }
+  </style>
+
+  <%- include('./partials/footer') %>
