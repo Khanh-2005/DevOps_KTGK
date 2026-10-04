@@ -289,9 +289,12 @@
 
   <!-- New Arrivals -->
   <section class="container-fluid mb-5">
-    <h2 class="text-center mb-4">New Arrivals</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">New Arrivals</h2>
+      <a href="/products?collection=new-arrivals" class="btn btn-outline-primary">Show All Products</a>
+    </div>
     <div class="row">
-      <% products.forEach(function(product) { %>
+      <% newArrivals.slice(0, 8).forEach(function(product) { %>
         <div class="col-md-3 mb-4">
           <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
             <a href="/product/<%= product.id %>">
@@ -323,9 +326,12 @@
 
   <!-- Featured Products -->
   <section class="container-fluid mb-5">
-    <h2 class="text-center mb-4">Featured Products</h2>
+    <div class="d-flex justify-content-between align-items-center mb-4">
+      <h2 class="mb-0">Featured Products</h2>
+      <a href="/products?collection=featured" class="btn btn-outline-primary">Show All Products</a>
+    </div>
     <div class="row">
-      <% products.forEach(function(product) { %>
+      <% featuredProducts.slice(0, 8).forEach(function(product) { %>
         <div class="col-md-3 mb-4">
           <div class="card h-100 shadow-sm border-0 rounded-3 overflow-hidden">
             <a href="/product/<%= product.id %>">

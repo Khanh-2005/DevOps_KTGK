@@ -2,20 +2,41 @@ const { Product, Category } = require("../models");
 const { Op } = require("sequelize");
 const moment = require("moment");
 
+const PRODUCT_COLLECTION_SIZE = 16;
+
+const getCollectionProductIds = async (collection) => {
+  if (collection !== "new-arrivals" && collection !== "featured") {
+    return null;
+  }
+
+  const products = await Product.findAll({
+    attributes: ["id"],
+    order: [["id", "DESC"]],
+    limit: PRODUCT_COLLECTION_SIZE,
+    offset: collection === "featured" ? PRODUCT_COLLECTION_SIZE : 0,
+  });
+
+  return products.map((product) => product.id);
+};
+
 // Trang chủ
 exports.getHomePage = async (req, res) => {
   try {
-    const products = await Product.findAll({
-      include: [
-        {
-          model: Category,
-          as: "category",
-        },
-      ],
-    });
-    const categories = await Category.findAll();
+    const [products, categories] = await Promise.all([
+      Product.findAll({
+        include: [{ model: Category, as: "category" }],
+        order: [["id", "DESC"]],
+        limit: PRODUCT_COLLECTION_SIZE * 2,
+      }),
+      Category.findAll(),
+    ]);
+
     res.render("user/home", {
-      products,
+      newArrivals: products.slice(0, PRODUCT_COLLECTION_SIZE),
+      featuredProducts: products.slice(
+        PRODUCT_COLLECTION_SIZE,
+        PRODUCT_COLLECTION_SIZE * 2
+      ),
       categories,
       user: req.session.user || null,
     });
@@ -28,9 +49,14 @@ exports.getHomePage = async (req, res) => {
 // Danh sách sản phẩm với bộ lọc
 exports.getProducts = async (req, res) => {
   try {
-    const { category, search, sort } = req.query;
+    const { category, collection, search, sort } = req.query;
     let where = {};
     let order = [];
+
+    const collectionProductIds = await getCollectionProductIds(collection);
+    if (collectionProductIds) {
+      where.id = { [Op.in]: collectionProductIds };
+    }
 
     if (category) {
       where.categoryId = category;
@@ -51,6 +77,10 @@ exports.getProducts = async (req, res) => {
       }
     }
 
+    if (collectionProductIds && order.length === 0) {
+      order.push(["id", "DESC"]);
+    }
+
     const products = await Product.findAll({
       where,
       order,
@@ -69,6 +99,10 @@ exports.getProducts = async (req, res) => {
       products,
       categories,
       currentCategory,
+      collection:
+        collection === "new-arrivals" || collection === "featured"
+          ? collection
+          : "",
       search,
       sort,
       user: req.session.user || null,
@@ -123,9 +157,14 @@ exports.getCategoryProducts = async (req, res) => {
       return res.status(404).send("Category not found");
     }
 
-    const { search, sort } = req.query;
+    const { collection, search, sort } = req.query;
     const where = { categoryId: category.id };
     const order = [];
+
+    const collectionProductIds = await getCollectionProductIds(collection);
+    if (collectionProductIds) {
+      where.id = { [Op.in]: collectionProductIds };
+    }
 
     if (search) {
       where.name = { [Op.like]: `%${search}%` };
@@ -135,6 +174,8 @@ exports.getCategoryProducts = async (req, res) => {
       order.push(["price", "ASC"]);
     } else if (sort === "price_desc") {
       order.push(["price", "DESC"]);
+    } else if (collectionProductIds) {
+      order.push(["id", "DESC"]);
     }
 
     const [products, categories] = await Promise.all([
@@ -150,6 +191,10 @@ exports.getCategoryProducts = async (req, res) => {
       products,
       categories,
       currentCategory: category,
+      collection:
+        collection === "new-arrivals" || collection === "featured"
+          ? collection
+          : "",
       search,
       sort,
       user: req.session.user || null,
