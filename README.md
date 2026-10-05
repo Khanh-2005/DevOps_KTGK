@@ -44,14 +44,14 @@ shopping cart and checkout flows, order history, and an admin dashboard.
 2. Create a `.env` file in the project root:
 
    ```dotenv
-   PORT=3000
+   PORT=
    SESSION_SECRET=replace-with-a-long-random-value
-   DB_NAME=warehouses_db
-   DB_USER=root
-   DB_PASS=root
-   DB_HOST=127.0.0.1
-   DB_DIALECT=mysql
-   DB_PORT=3307
+   DB_NAME=
+   DB_USER=
+   DB_PASS=
+   DB_HOST=
+   DB_DIALECT=
+   DB_PORT=
    ```
 
    Change the database values to match your MySQL installation. The application

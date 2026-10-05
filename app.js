@@ -57,7 +57,7 @@ function initializeDatabase() {
       if (process.env.VERCEL) {
         await sequelize.authenticate();
       } else {
-        await sequelize.sync({ alter: true });
+        await sequelize.sync();
       }
       await sessionStore.sync();
 
