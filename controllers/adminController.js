@@ -72,12 +72,32 @@ exports.getDashboard = async (req, res) => {
     const lowStockItems = await Product.count({
       where: { stock: { [Op.lt]: 10 } },
     });
+    const recentOrders = await Order.findAll({
+      attributes: ["id", "fullName", "totalAmount", "status", "createdAt"],
+      include: [
+        {
+          model: OrderItem,
+          as: "items",
+          attributes: ["quantity"],
+          include: [
+            {
+              model: Product,
+              as: "product",
+              attributes: ["name"],
+            },
+          ],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+      limit: 5,
+    });
 
     res.render("admin/dashboard", {
       totalProducts,
       totalOrders,
       totalCategories,
       lowStockItems,
+      recentOrders,
       user: req.session.user,
     });
   } catch (error) {

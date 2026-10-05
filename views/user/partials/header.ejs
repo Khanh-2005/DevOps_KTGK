@@ -32,11 +32,9 @@
       <div class="collapse navbar-collapse" id="navbarNav">
         <ul class="navbar-nav ms-auto">
           <li class="nav-item">
-            <a class="nav-link position-relative" href="/cart">
-              <i class="fas fa-shopping-cart cart-icon"></i>
-              <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger cart-badge">
-                <%= (user && user.cart) ? user.cart.length : 0 %>
-              </span>
+            <a class="nav-link" href="/cart">
+              <i class="fas fa-shopping-cart"></i>
+              <span class="badge bg-primary">0</span>
             </a>
           </li>
           <% if (user) { %>

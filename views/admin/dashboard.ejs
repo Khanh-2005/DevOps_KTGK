@@ -1,236 +1,192 @@
 <%- include('./partials/header') %>
 
-<div class="container-fluid mt-4">
-  <div class="row">
-    <!-- Sidebar -->
-    <div class="col-md-3 col-lg-2 d-md-block bg-light sidebar">
-      <div class="position-sticky">
-        <ul class="nav flex-column">
-          <li class="nav-item">
-            <a class="nav-link active" href="/admin/dashboard">
-              <i class="fas fa-home me-2"></i>
-              Dashboard
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/categories">
-              <i class="fas fa-tags me-2"></i>
-              Categories
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/products">
-              <i class="fas fa-box me-2"></i>
-              Products
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/inventory">
-              <i class="fas fa-warehouse me-2"></i>
-              Inventory
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/admin/orders">
-              <i class="fas fa-shopping-cart me-2"></i>
-              Orders
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-
-    <!-- Main content -->
-    <div class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div
-        class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom"
-      >
-        <h1 class="h2">Dashboard Overview</h1>
-        <div class="btn-toolbar mb-2 mb-md-0">
-          <div class="btn-group me-2">
-            <button type="button" class="btn btn-sm btn-outline-secondary">
-              Share
-            </button>
-            <button type="button" class="btn btn-sm btn-outline-secondary">
-              Export
+  <div class="container-fluid mt-4">
+    <div class="row">
+      <div class="col-12 px-md-4">
+        <div
+          class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+          <h1 class="h2">Dashboard Overview</h1>
+          <div class="btn-toolbar mb-2 mb-md-0">
+            <div class="btn-group me-2">
+              <button type="button" class="btn btn-sm btn-outline-secondary">
+                Share
+              </button>
+              <button type="button" class="btn btn-sm btn-outline-secondary">
+                Export
+              </button>
+            </div>
+            <button type="button" class="btn btn-sm btn-outline-secondary dropdown-toggle">
+              <i class="fas fa-calendar me-1"></i>
+              This week
             </button>
           </div>
-          <button
-            type="button"
-            class="btn btn-sm btn-outline-secondary dropdown-toggle"
-          >
-            <i class="fas fa-calendar me-1"></i>
-            This week
-          </button>
         </div>
-      </div>
 
-      <!-- Statistics Cards -->
-      <div class="container mt-4">
-        <div class="row g-4">
-          <div class="col-lg-3 col-md-6">
-            <div class="card border-start-primary shadow-lg p-3">
-              <div class="card-body">
-                <h6 class="text-primary text-uppercase fw-bold">
-                  Total Products
-                </h6>
-                <h4 class="fw-bold text-dark">250</h4>
-                <i class="fas fa-box fa-2x text-gray-300"></i>
+        <!-- Statistics Cards -->
+        <div class="container mt-4">
+          <div class="row g-4">
+            <div class="col-lg-3 col-md-6">
+              <div class="card border-start-primary shadow-lg p-3">
+                <div class="card-body">
+                  <h6 class="text-primary text-uppercase fw-bold">
+                    Total Products
+                  </h6>
+                  <h4 class="fw-bold text-dark">
+                    <%= totalProducts %>
+                  </h4>
+                  <i class="fas fa-box fa-2x text-gray-300"></i>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="card border-start-success shadow-lg p-3">
-              <div class="card-body">
-                <h6 class="text-success text-uppercase fw-bold">
-                  Total Orders
-                </h6>
-                <h4 class="fw-bold text-dark">150</h4>
-                <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+            <div class="col-lg-3 col-md-6">
+              <div class="card border-start-success shadow-lg p-3">
+                <div class="card-body">
+                  <h6 class="text-success text-uppercase fw-bold">
+                    Total Orders
+                  </h6>
+                  <h4 class="fw-bold text-dark">
+                    <%= totalOrders %>
+                  </h4>
+                  <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="card border-start-info shadow-lg p-3">
-              <div class="card-body">
-                <h6 class="text-info text-uppercase fw-bold">Categories</h6>
-                <h4 class="fw-bold text-dark">15</h4>
-                <i class="fas fa-tags fa-2x text-gray-300"></i>
+            <div class="col-lg-3 col-md-6">
+              <div class="card border-start-info shadow-lg p-3">
+                <div class="card-body">
+                  <h6 class="text-info text-uppercase fw-bold">Categories</h6>
+                  <h4 class="fw-bold text-dark">
+                    <%= totalCategories %>
+                  </h4>
+                  <i class="fas fa-tags fa-2x text-gray-300"></i>
+                </div>
               </div>
             </div>
-          </div>
 
-          <div class="col-lg-3 col-md-6">
-            <div class="card border-start-warning shadow-lg p-3">
-              <div class="card-body">
-                <h6 class="text-warning text-uppercase fw-bold">
-                  Low Stock Items
-                </h6>
-                <h4 class="fw-bold text-dark">18</h4>
-                <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+            <div class="col-lg-3 col-md-6">
+              <div class="card border-start-warning shadow-lg p-3">
+                <div class="card-body">
+                  <h6 class="text-warning text-uppercase fw-bold">
+                    Low Stock Items
+                  </h6>
+                  <h4 class="fw-bold text-dark">
+                    <%= lowStockItems %>
+                  </h4>
+                  <i class="fas fa-exclamation-triangle fa-2x text-gray-300"></i>
+                </div>
               </div>
             </div>
           </div>
         </div>
-      </div>
 
-      <!-- Recent Orders Table -->
-      <div class="card shadow mb-4">
-        <div class="card-header py-3">
-          <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
-        </div>
-        <div class="card-body">
-          <div class="table-responsive">
-            <table class="table table-bordered" width="100%" cellspacing="0">
-              <thead>
-                <tr>
-                  <th>Order ID</th>
-                  <th>Customer</th>
-                  <th>Products</th>
-                  <th>Total</th>
-                  <th>Status</th>
-                  <th>Date</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td>#12345</td>
-                  <td>John Doe</td>
-                  <td>Product A, Product B</td>
-                  <td>$250.00</td>
-                  <td><span class="badge bg-success">Completed</span></td>
-                  <td>2024-03-20</td>
-                </tr>
-                <tr>
-                  <td>#12346</td>
-                  <td>Jane Smith</td>
-                  <td>Product C</td>
-                  <td>$120.00</td>
-                  <td><span class="badge bg-warning">Pending</span></td>
-                  <td>2024-03-20</td>
-                </tr>
-              </tbody>
-            </table>
+        <!-- Recent Orders Table -->
+        <div class="card shadow mb-4" style="margin-top: 2rem;">
+          <div class="card-header py-3">
+            <h6 class="m-0 font-weight-bold text-primary">Recent Orders</h6>
+          </div>
+          <div class="card-body">
+            <div class="table-responsive">
+              <table class="table table-bordered" width="100%" cellspacing="0">
+                <thead>
+                  <tr>
+                    <th>Order ID</th>
+                    <th>Customer</th>
+                    <th>Products</th>
+                    <th>Total</th>
+                    <th>Status</th>
+                    <th>Date</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <% if (recentOrders && recentOrders.length> 0) { %>
+                    <% recentOrders.forEach(function(order) { %>
+                      <tr>
+                        <% const statusClass = ({ pending: 'primary', processing: 'warning', shipped: 'info',
+                          delivered: 'success', cancelled: 'danger' })[String(order.status).toLowerCase()] || 'secondary'; %>
+                        <td>#<%= order.id %>
+                        </td>
+                        <td>
+                          <%= order.fullName %>
+                        </td>
+                        <td>
+                          <%= order.items && order.items.length ? order.items.map(function(item) { return item.product ?
+                            item.product.name : 'Product unavailable' ; }).join(', ')
+                            : ' No products' %>
+                        </td>
+                        <td>$<%= Number(order.totalAmount).toFixed(2) %>
+                        </td>
+                        <td><span class="badge bg-<%= statusClass %>">
+                            <%= order.status %>
+                          </span></td>
+                        <td>
+                          <%= new Date(order.createdAt).toLocaleDateString('vi-VN') %>
+                        </td>
+                      </tr>
+                      <% }); %>
+                        <% } else { %>
+                          <tr>
+                            <td class="text-center text-muted" colspan="6">No orders yet.</td>
+                          </tr>
+                          <% } %>
+                </tbody>
+              </table>
+            </div>
           </div>
         </div>
       </div>
     </div>
   </div>
-</div>
 
-<!-- Add Font Awesome for icons -->
-<link
-  rel="stylesheet"
-  href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css"
-/>
+  <!-- Add Font Awesome for icons -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
 
-<!-- Custom CSS -->
-<style>
-  .sidebar {
-    box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.05);
-    min-height: calc(100vh - 56px);
-  }
-
-  .sidebar .nav-link {
-    color: #333;
-    padding: 1rem;
-    border-radius: 0.25rem;
-    margin: 0.2rem 0;
-  }
-
-  .sidebar .nav-link:hover {
-    background-color: #f8f9fa;
-  }
-
-  .sidebar .nav-link.active {
-    background-color: #e9ecef;
-  }
-
-  .border-left-primary {
-    border-left: 4px solid #4e73df;
-  }
-
-  .border-left-success {
-    border-left: 4px solid #1cc88a;
-  }
-
-  .border-left-info {
-    border-left: 4px solid #36b9cc;
-  }
-
-  .border-left-warning {
-    border-left: 4px solid #f6c23e;
-  }
-
-  .card {
-    transition: transform 0.2s;
-  }
-
-  .card:hover {
-    transform: translateY(-5px);
-  }
-
-  .text-xs {
-    font-size: 0.7rem;
-  }
-
-  .text-gray-300 {
-    color: #dddfeb;
-  }
-
-  .text-gray-800 {
-    color: #5a5c69;
-  }
-
-  @media (max-width: 768px) {
-    .sidebar {
-      position: static;
-      height: auto;
-      padding-top: 0;
+  <!-- Custom CSS -->
+  <style>
+    .border-left-primary {
+      border-left: 4px solid #4e73df;
     }
-  }
-</style>
 
-<%- include('./partials/footer') %>
+    .border-left-success {
+      border-left: 4px solid #1cc88a;
+    }
+
+    .border-left-info {
+      border-left: 4px solid #36b9cc;
+    }
+
+    .border-left-warning {
+      border-left: 4px solid #f6c23e;
+    }
+
+    .card {
+      transition: transform 0.2s;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+
+    .text-xs {
+      font-size: 0.7rem;
+    }
+
+    .text-gray-300 {
+      color: #dddfeb;
+    }
+
+    .text-gray-800 {
+      color: #5a5c69;
+    }
+
+    @media (max-width: 768px) {
+      .sidebar {
+        position: static;
+        height: auto;
+        padding-top: 0;
+      }
+    }
+  </style>
+
+  <%- include('./partials/footer') %>

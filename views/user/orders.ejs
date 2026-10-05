@@ -21,13 +21,15 @@
           <tbody>
             <% orders.forEach(function(order) { %>
             <tr>
+              <% const statusClass = ({ pending: 'primary', processing: 'warning', shipped: 'info',
+                delivered: 'success', cancelled: 'danger' })[String(order.status).toLowerCase()] || 'secondary'; %>
               <td>#<%= order.id %></td>
               <td><%= moment(order.createdAt).format('MMM D, YYYY') %></td>
               <td><%= order.items.length %> items</td>
               <td>$<%= parseFloat(order.totalAmount).toFixed(2) %></td>
               <td>
                 <span
-                  class="badge bg-<%= order.status === 'delivered' ? 'success' : order.status === 'cancelled' ? 'danger' : order.status === 'processing' ? 'warning' : 'primary' %>"
+                  class="badge bg-<%= statusClass %>"
                 >
                   <%= order.status.toUpperCase() %>
                 </span>

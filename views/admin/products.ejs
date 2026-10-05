@@ -15,50 +15,51 @@
         </div>
 
         <!-- Product Summary Cards -->
+
         <div class="row mb-5" id="categorySummaryCards">
-          <% const summaryCategories = categories.slice(0, 3); %>
-          <% summaryCategories.forEach(function(category, index) { const tones=['primary', 'success' , 'warning' ];
-            const tone=tones[index % tones.length]; const categoryProductCount=products.filter(product=>
-            product.category && Number(product.category.id) === Number(category.id)
-            ).length;
-            %>
-            <div class="col-xl-3 col-md-6 mb-4">
-              <button type="button" class="card summary-card border-left-<%= tone %> shadow h-100 py-2 w-100"
-                data-category-filter="<%= category.id %>" aria-pressed="false">
-                <div class="card-body py-2">
-                  <div class="d-flex justify-content-between align-items-center">
-                    <div class="me-2">
-                      <div class="text-xs font-weight-bold text-<%= tone %> text-uppercase mb-1">
-                        <%= category.name %>
+          <% const summaryCategories=categories.slice(0, 3); %>
+            <% summaryCategories.forEach(function(category, index) { const tones=['primary', 'success' , 'warning' ];
+              const tone=tones[index % tones.length]; const categoryProductCount=products.filter(product=>
+              product.category && Number(product.category.id) === Number(category.id)
+              ).length;
+              %>
+              <div class="col-xl-3 col-md-6 mb-4">
+                <button type="button" class="card summary-card border-left-<%= tone %> shadow h-100 py-2 w-100"
+                  data-category-filter="<%= category.id %>" aria-pressed="false">
+                  <div class="card-body py-2">
+                    <div class="d-flex justify-content-between align-items-center">
+                      <div class="me-2">
+                        <div class="text-xs font-weight-bold text-<%= tone %> text-uppercase mb-1">
+                          <%= category.name %>
+                        </div>
+                        <div class="h5 mb-0 font-weight-bold text-gray-800">
+                          <%= categoryProductCount %>
+                        </div>
                       </div>
-                      <div class="h5 mb-0 font-weight-bold text-gray-800">
-                        <%= categoryProductCount %>
-                      </div>
-                    </div>
-                    <i class="bi bi-tag fa-2x text-gray-300"></i>
-                  </div>
-                </div>
-              </button>
-            </div>
-            <% }); %>
-          <div class="col-xl-3 col-md-6 mb-4">
-            <button type="button" class="card summary-card border-left-danger shadow h-100 py-2 w-100"
-              data-category-filter="other" aria-pressed="false">
-              <div class="card-body py-2">
-                <div class="d-flex justify-content-between align-items-center">
-                  <div class="me-2">
-                    <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Other Products</div>
-                    <div class="h5 mb-0 font-weight-bold text-gray-800">
-                      <%= products.filter(product => !product.category ||
-                        !summaryCategories.some(category => Number(category.id) === Number(product.category.id))
-                      ).length %>
+                      <i class="bi bi-tag fa-2x text-gray-300"></i>
                     </div>
                   </div>
-                  <i class="bi bi-tag fa-2x text-gray-300"></i>
-                </div>
+                </button>
               </div>
-            </button>
-          </div>
+              <% }); %>
+                <div class="col-xl-3 col-md-6 mb-4">
+                  <button type="button" class="card summary-card border-left-danger shadow h-100 py-2 w-100"
+                    data-category-filter="other" aria-pressed="false">
+                    <div class="card-body py-2">
+                      <div class="d-flex justify-content-between align-items-center">
+                        <div class="me-2">
+                          <div class="text-xs font-weight-bold text-danger text-uppercase mb-1">Other Products</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800">
+                            <%= products.filter(product=> !product.category ||
+                              !summaryCategories.some(category => Number(category.id) === Number(product.category.id))
+                              ).length %>
+                          </div>
+                        </div>
+                        <i class="bi bi-tag fa-2x text-gray-300"></i>
+                      </div>
+                    </div>
+                  </button>
+                </div>
         </div>
 
         <!-- Thêm phần tìm kiếm vào trước bảng sản phẩm -->

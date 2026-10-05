@@ -7,86 +7,200 @@
   <title>Admin Dashboard</title>
   <link rel="stylesheet" href="/css/bootstrap.min.css" />
   <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons/font/bootstrap-icons.css" />
-  <script src="/js/bootstrap.bundle.min.js"></script>
+  <style>
+    .admin-header {
+      min-height: 50px;
+      background: #fff;
+      box-shadow: 0 1px 5px rgb(0 0 0 / 8%);
+    }
+
+    .admin-header .nav-link,
+    .admin-header .icon-button {
+      color: #53657d;
+    }
+
+    .admin-header .nav-link:hover,
+    .admin-header .icon-button:hover {
+      color: #1b2a4e;
+    }
+
+    .admin-header .icon-button {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 40px;
+      min-height: 40px;
+      border: 0;
+      background: transparent;
+      font-size: 1.1rem;
+      text-decoration: none;
+    }
+
+    .admin-header .admin-avatar {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: #e9ecef;
+      color: #53657d;
+      font-size: 1.35rem;
+    }
+
+    .admin-sidebar-backdrop {
+      position: fixed;
+      z-index: 1030;
+      inset: 50px 0 0;
+      background: rgb(0 0 0 / 35%);
+      opacity: 0;
+      visibility: hidden;
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+    }
+
+    .admin-sidebar {
+      position: fixed;
+      z-index: 1031;
+      top: 50px;
+      bottom: 0;
+      left: 0;
+      width: min(280px, 85vw);
+      padding: 1rem;
+      overflow-y: auto;
+      background: #fff;
+      box-shadow: 2px 0 12px rgb(0 0 0 / 12%);
+      transform: translateX(-105%);
+      visibility: hidden;
+      transition: transform 0.2s ease, visibility 0.2s ease;
+    }
+
+    .admin-sidebar .nav-link {
+      padding: 0.75rem 1rem;
+      border-radius: 0.375rem;
+      color: #53657d;
+    }
+
+    .admin-sidebar .nav-link:hover,
+    .admin-sidebar .nav-link.active {
+      background: #eef2f8;
+      color: #1b2a4e;
+    }
+
+    .admin-sidebar .nav-link.text-danger {
+      color: #dc3545 !important;
+    }
+
+    .admin-sidebar-open {
+      overflow: hidden;
+    }
+
+    .admin-sidebar-open .admin-sidebar-backdrop {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    .admin-sidebar-open .admin-sidebar {
+      transform: translateX(0);
+      visibility: visible;
+    }
+
+    @media (max-width: 575.98px) {
+      .admin-header .admin-user-name {
+        display: none;
+      }
+    }
+
+    .admin-sidebar-collapsed .sidebar {
+      display: none !important;
+    }
+
+    .admin-sidebar-collapsed .sidebar+.col-md-9 {
+      flex: 0 0 100%;
+      max-width: 100%;
+      margin-left: 0 !important;
+    }
+  </style>
 </head>
 
 <body>
-  <nav class="navbar navbar-expand-lg navbar-dark" style="background-color: #1b2a4e">
-    <div class="container">
-      <!-- Logo / Tên Dashboard -->
-      <a class="navbar-brand fw-bold text-uppercase" href="/admin/dashboard">
-        <i class="bi bi-speedometer2"></i> Admin Dashboard
-      </a>
-
-      <!-- Nút Toggle Mobile -->
-      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <% if (typeof user !=='undefined' && user) { %>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
+  <header class="admin-header">
+    <nav class="navbar navbar-expand navbar-light py-1">
+      <div class="container-fluid px-3 px-lg-4">
+        <div class="d-flex align-items-center">
+          <button class="icon-button" id="adminSidebarToggle" type="button" aria-label="Toggle admin sidebar"
+            aria-controls="adminSidebar" aria-expanded="false">
+            <i class="bi bi-list"></i>
+          </button>
+          <ul class="navbar-nav flex-row ms-3">
             <li class="nav-item">
-              <a class="nav-link text-light fw-semibold" href="/admin/categories">
-                <i class="bi bi-list"></i> Categories
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-light fw-semibold" href="/admin/products">
-                <i class="bi bi-box-seam"></i> Products
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-light fw-semibold" href="/admin/inventory">
-                <i class="bi bi-clipboard-data"></i> Inventory
-              </a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link text-light fw-semibold" href="/admin/orders">
-                <i class="bi bi-cart-check"></i> Orders
-              </a>
-            </li>
-          </ul>
-
-          <!-- Logout -->
-          <ul class="navbar-nav ms-auto">
-            <li class="nav-item">
-              <a class="nav-link text-danger fw-bold" href="/admin/logout">
-                <i class="bi bi-box-arrow-right"></i> Logout
-              </a>
+              <a class="nav-link px-3" href="/admin/dashboard">Home</a>
             </li>
           </ul>
         </div>
-        <% } %>
-    </div>
-  </nav>
+
+        <div class="d-flex align-items-center ms-auto">
+          <span class="icon-button" aria-hidden="true">
+            <i class="bi bi-chat-left-text"></i>
+          </span>
+          <span class="icon-button" aria-hidden="true">
+            <i class="bi bi-bell"></i>
+          </span>
+          <button class="icon-button" id="adminFullscreenToggle" type="button" aria-label="Toggle fullscreen">
+            <i class="bi bi-arrows-fullscreen"></i>
+          </button>
+          <div class="d-flex align-items-center ms-2 ms-lg-3">
+            <span class="admin-avatar" aria-hidden="true">
+              <i class="bi bi-person-fill"></i>
+            </span>
+            <span class="admin-user-name ms-2">
+              <%= typeof user !=='undefined' && user && user.username ? user.username : 'Admin' %>
+            </span>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </header>
+
+  <%- include('./sidebar') %>
 
   <script>
-    // Đóng navbar khi nhấn vào một mục menu trên mobile
     document.addEventListener("DOMContentLoaded", function () {
-      let navbarToggler = document.querySelector(".navbar-toggler");
-      let navbarCollapse = document.querySelector(".navbar-collapse");
+      const sidebarToggle = document.getElementById("adminSidebarToggle");
+      const fullscreenToggle = document.getElementById("adminFullscreenToggle");
+      const sidebarBackdrop = document.getElementById("adminSidebarBackdrop");
+      const sidebarClose = document.getElementById("adminSidebarClose");
 
-      document.querySelectorAll(".navbar-nav a").forEach((link) => {
-        link.addEventListener("click", function () {
-          if (window.innerWidth < 992) {
-            // Chỉ áp dụng trên mobile
-            navbarToggler.click(); // Kích hoạt toggle để đóng navbar
-          }
-        });
+      function setSidebarOpen(isOpen) {
+        document.body.classList.toggle("admin-sidebar-open", isOpen);
+        sidebarToggle.setAttribute("aria-expanded", String(isOpen));
+        document.getElementById("adminSidebar").setAttribute("aria-hidden", String(!isOpen));
+      }
+
+      sidebarToggle.addEventListener("click", function () {
+        setSidebarOpen(sidebarToggle.getAttribute("aria-expanded") !== "true");
       });
 
-      // Đóng navbar khi nhấn bên ngoài
-      document.addEventListener("click", function (event) {
-        let isClickInside =
-          navbarCollapse.contains(event.target) ||
-          navbarToggler.contains(event.target);
-        if (!isClickInside && navbarCollapse.classList.contains("show")) {
-          navbarToggler.click();
+      sidebarBackdrop.addEventListener("click", function () {
+        setSidebarOpen(false);
+      });
+
+      sidebarClose.addEventListener("click", function () {
+        setSidebarOpen(false);
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          setSidebarOpen(false);
+        }
+      });
+
+      fullscreenToggle.addEventListener("click", function () {
+        if (document.fullscreenElement) {
+          document.exitFullscreen();
+        } else {
+          document.documentElement.requestFullscreen();
         }
       });
     });
   </script>
-</body>
-
-</html>
